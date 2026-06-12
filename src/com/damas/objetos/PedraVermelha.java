@@ -1,13 +1,10 @@
 package com.damas.objetos;
 
-public class PedraVermelha implements Peca {
-
-    protected Casa casa;
+public class PedraVermelha extends PecaBase {
     protected Cor cor;
 
     public PedraVermelha(Casa casa) {
-        this.casa = casa;
-        this.cor = Cor.VERMELHA;
+        super(casa, Cor.VERMELHA);
         casa.colocarPeca(this);
     }
 

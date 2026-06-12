@@ -10,11 +10,9 @@ import com.damas.objetos.Peca;
     protected Cor cor;
     public PecaBase(Casa casa, Cor cor) {
         this.casa = casa;
-        this.cor = cor;
         casa.colocarPeca(this);
     }
 
-                // O código de mover é IGUAL para todas, então fica aqui!
     @Override
     public void mover(Casa destino) {
         casa.removerPeca();
@@ -25,3 +23,4 @@ import com.damas.objetos.Peca;
     @Override
     public Cor getCor() { return cor; }
     }
+

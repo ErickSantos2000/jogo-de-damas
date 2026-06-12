@@ -2,8 +2,8 @@ package com.damas.objetos;
 
 public class DamaBranca extends PecaBase{
 
-    public DamaBranca(Casa casa, Cor cor) {
-        super(casa, cor);
+    public DamaBranca(Casa casa) {
+        super(casa, Cor.BRANCA);
     }
 
     @Override
