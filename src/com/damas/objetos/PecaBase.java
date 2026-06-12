@@ -21,6 +21,11 @@ import com.damas.objetos.Peca;
     }
 
     @Override
+    public boolean isMovimentoValido(Casa destino) {
+        return false;
+    }
+
+    @Override
     public Cor getCor() { return cor; }
     }
 
