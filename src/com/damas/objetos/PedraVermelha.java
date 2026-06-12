@@ -7,7 +7,7 @@ public class PedraVermelha implements Peca {
 
     public PedraVermelha(Casa casa) {
         this.casa = casa;
-        this.cor = Cor.BRANCA;
+        this.cor = Cor.VERMELHA;
         casa.colocarPeca(this);
     }
 

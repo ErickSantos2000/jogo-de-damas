@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Armazena o tabuleiro e responsavel por posicionar as pecas.
- * 
+ *
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  * @author João Victor da S. Cirilo {@link joao.cirilo@academico.ufpb.br}
@@ -26,7 +26,7 @@ public class Jogo {
         pecasAComer = new ArrayList<Casa>();
         jogadorUm = new Jogador("player branco");
         jogadorDois = new Jogador("player vermelho");
-        
+
         vezAtual = 1;
         jogadas = 0;
         jogadasSemComerPeca = 0;
@@ -34,16 +34,7 @@ public class Jogo {
 
         colocarPecas(tabuleiro);
     }
-    
-    /**
-     * Realiza uma serie de paços para comandar uma peça na posicão 
-     * (origemX, origemY) fazer um movimento para (destinoX, destinoY).
-     * 
-     * @param origemX - {@code int} linha da Casa de origem.
-     * @param origemY - {@code int} coluna da Casa de origem.
-     * @param destinoX - {@code int} linha da Casa de destino.
-     * @param destinoY - {@code int} coluna da Casa de destino.
-     */
+
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
@@ -55,7 +46,7 @@ public class Jogo {
 
                 if (peca.isMovimentoValido(destino)) {
 
-                    if (simularMovimentoEValidar(origem, destino)) {                    
+                    if (simularMovimentoEValidar(origem, destino)) {
 
                         peca.mover(destino);
 
@@ -91,9 +82,9 @@ public class Jogo {
     /**
      * <p>
      * Percorre as casas da casa de origem clicada até a casa de destino clicada,
-     * verifica se o caminho é valido e adiciona casas a variável {@code pecasAComer} 
-     * </p> 
-     * 
+     * verifica se o caminho é valido e adiciona casas a variável {@code pecasAComer}
+     * </p>
+     *
      * @param origem {@code Casa} de origem
      * @param destino {@code Casa} de destino
      * @return {@code boolean} se a simulação ocorreu bem
@@ -107,9 +98,9 @@ public class Jogo {
         // SENTIDO DO MOVIMENTO E DISTÂNCIA DO MOVIMENTO
         int sentidoX = (destino.getX() - origem.getX());
         int sentidoY = (destino.getY() - origem.getY());
-        int distanciaX = Math.abs(sentidoX); 
+        int distanciaX = Math.abs(sentidoX);
         int distanciaY = Math.abs(sentidoY);
-        
+
         if ((distanciaX == 0) || (distanciaY == 0)) return false;
 
         sentidoX = sentidoX/distanciaX;
@@ -193,7 +184,7 @@ public class Jogo {
      * por {@code sentidoX} e {@code sentidoY} até o limite do tabuleiro.
      * </p>
      * @param origem Casa de origem da peça
-     * @param deltaX {@code Tabuleiro.X_ESQUERDA} ou {@code Tabuleiro.X_DIREITA} 
+     * @param deltaX {@code Tabuleiro.X_ESQUERDA} ou {@code Tabuleiro.X_DIREITA}
      * @param deltaY {@code Tabuleiro.Y_BAIXO} ou {@code Tabuleiro.Y_CIMA}
      * @return
      * {@code false} - se não há peça para comer
@@ -207,17 +198,17 @@ public class Jogo {
         int x = origem.getX();
         int y = origem.getY();
         int pecasSeguidasNoCaminho = 0;
-        
+
         // SE O TIPO FOR PEDRA
         if ((peca.getCor() == Peca.PEDRA_BRANCA) || (peca.getCor() == Peca.PEDRA_VERMELHA)) {
-            
+
             x += deltaX;
             y += deltaY;
-            
+
             try {
 
                 Pedra pecaAtual = tabuleiro.getCasa(x, y).getPeca();
-                
+
                 if (!( pecaAtual == null)) {
 
                     if (tabuleiro.getCasa((x + deltaX), (y + deltaY)).getPeca() != null) {
@@ -246,14 +237,14 @@ public class Jogo {
             while (!((x == -1 || x == 8) || (y == -1 || y == 8))) {
                 x += deltaX;
                 y += deltaY;
-                
+
                 try {
                     Pedra pecaAtual = tabuleiro.getCasa(x, y).getPeca();
-    
+
                     if (!( pecaAtual == null)) {
-                    
+
                         pecasSeguidasNoCaminho += 1;
-        
+
                         // VERIFICA SE HÁ ALGUMA PEÇA DO MESMO TIPO NO CAMINHO SE SIM, RETORNA FALSE;
                         if ((peca.getCor() == Peca.DAMA_BRANCA) &&
                             ((pecaAtual.getCor() == Peca.PEDRA_BRANCA) || (pecaAtual.getCor() == Peca.DAMA_BRANCA))) {
@@ -262,14 +253,14 @@ public class Jogo {
                             if ((peca.getCor() == Peca.DAMA_VERMELHA) &&
                             ((pecaAtual.getCor() == Peca.PEDRA_VERMELHA) || (pecaAtual.getCor() == Peca.DAMA_VERMELHA))) {
                                     return false;
-                            }   
+                            }
                         }
                     } else {
-        
+
                         if (pecasSeguidasNoCaminho == 1) {
                             return true;
                         }
-        
+
                         if (pecasSeguidasNoCaminho == 2) {
                             return false;
                         }
@@ -296,25 +287,25 @@ public class Jogo {
         if (percorrerEVerificar(origem, Tabuleiro.X_ESQUERDA, Tabuleiro.Y_CIMA)) {
             return true;
         } else {
-            
+
             if (percorrerEVerificar(origem, Tabuleiro.X_DIREITA, Tabuleiro.Y_CIMA)) {
                 return true;
             } else {
-                        
+
                 if (percorrerEVerificar(origem, Tabuleiro.X_DIREITA, Tabuleiro.Y_BAIXO)) {
                     return true;
                 } else {
 
                     if (percorrerEVerificar(origem, Tabuleiro.X_ESQUERDA, Tabuleiro.Y_BAIXO)) {
                         return true;
-                    }                    
+                    }
                 }
             }
 
         }
 
         return false;
-    } 
+    }
 
     /**
      * Limpa as peças na variável {@code ArrayList pecasAComer}, adiciona pontos ao jogador
@@ -340,12 +331,12 @@ public class Jogo {
      * @return {@code boolean}
      */
     private boolean podeTransformarParaDama(Casa casa) {
-        
+
         // REGRA PARA PEÇAS BRANCAS
         if (casa.getPeca().getCor() == Peca.PEDRA_BRANCA) {
             if (casa.getY() == 7) return true;
         }
-        
+
         // REGRA PARA PEÇAS VERMELHAS
         if (casa.getPeca().getCor() == Peca.PEDRA_VERMELHA) {
             if (casa.getY() == 0) return true;
@@ -384,7 +375,7 @@ public class Jogo {
                     Casa casa = tabuleiro.getCasa(x, y);
                     new Pedra(casa, Pedra.PEDRA_BRANCA);
                 }
-                
+
                 else if ((x % 2 != 0) && (y % 2 != 0)){
                     Casa casa = tabuleiro.getCasa(x, y);
                     new Pedra(casa, Peca.PEDRA_BRANCA);
@@ -419,7 +410,7 @@ public class Jogo {
     }
 
     /**
-     * 
+     *
      * @return
      * {@code int } 0 - Nenhum jogador
      * <li> {@code int} 1 - Jogador um </li>
@@ -437,7 +428,7 @@ public class Jogo {
     public Tabuleiro getTabuleiro() {
         return tabuleiro;
     }
-    
+
     public void setJogadorUm(Jogador jogador) {
         jogadorUm = jogador;
     }
@@ -479,7 +470,7 @@ public class Jogo {
     public String toString() {
 
         String retorno = "Vez: ";
-        if (getVez() == 1) { 
+        if (getVez() == 1) {
             retorno += jogadorUm.getNome();
             retorno += "\n";
         } else if (getVez() == 2) {
@@ -493,7 +484,7 @@ public class Jogo {
         retorno += "Informações do(a) jogador(a) " + jogadorUm.getNome() + "\n";
         retorno += "Pontos: " + jogadorUm.getPontos() + "\n";
         retorno += "Nº de peças restantes: " + (12 - jogadorDois.getPontos()) + "\n";
-        retorno += "\n";        
+        retorno += "\n";
         retorno += "Informações do(a) jogador(a) " + jogadorDois.getNome() + "\n";
         retorno += "Pontos: " + jogadorDois.getPontos() + "\n";
         retorno += "Nº de peças restantes: " + (12 - jogadorUm.getPontos()) + "\n";

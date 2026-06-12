@@ -15,5 +15,4 @@ public class DamaBranca extends PecaBase{
 
         return false;
     }
-
 }
