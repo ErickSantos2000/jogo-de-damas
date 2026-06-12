@@ -15,4 +15,9 @@ public class DamaBranca extends PecaBase{
 
         return false;
     }
+
+    @Override
+    public boolean podeMover(Cor vezAtual) {
+        return vezAtual == this.cor;
+    }
 }

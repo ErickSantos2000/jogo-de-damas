@@ -1,8 +1,4 @@
 package com.damas.objetos;
-import com.damas.objetos.Casa;
-import com.damas.objetos.Cor;
-import com.damas.objetos.Peca;
-
 
 // É uma classe "mãe" que guarda o que é igual
  public abstract class PecaBase implements Peca {
@@ -19,13 +15,9 @@ import com.damas.objetos.Peca;
         destino.colocarPeca(this);
         casa = destino;
     }
+ }
 
-    @Override
-    public boolean isMovimentoValido(Casa destino) {
-        return false;
-    }
 
-    @Override
-    public Cor getCor() { return cor; }
-    }
+
+
 

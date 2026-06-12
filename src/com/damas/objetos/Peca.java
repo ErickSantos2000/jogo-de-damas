@@ -12,14 +12,14 @@ public interface Peca {
      * implementar a lógica de comer peças.
      * @param destino nova casa que ira conter esta peca.
      */
-    public void mover(Casa destino);
+    abstract public void mover(Casa destino);
 
     /**
      * Implementa a regra de movimento da peça
      * @param destino - tipo {@code Casa} destino da peça
      * @return {@code boolean}
      */
-    public boolean isMovimentoValido(Casa destino);
+    abstract public boolean isMovimentoValido(Casa destino);
 
     /**
      * Retorna o tipo da peça
@@ -29,5 +29,6 @@ public interface Peca {
      * <li>{@code int} 2 - {@code Pedra} vermelha</li>
      * <li>{@code int} 3 - {@code Dama} verelha</li>
      */
-    public Cor getCor();
+    abstract public Cor getCor();
+    abstract public boolean podeMover(Cor vezAtual);
 }

@@ -8,13 +8,6 @@ public class PedraBranca extends PecaBase {
     }
 
     @Override
-    public void mover(Casa destino) {
-        casa.removerPeca();
-        destino.colocarPeca(this);
-        casa = destino;
-    }
-
-    @Override
     public boolean isMovimentoValido(Casa destino) {
 
         // SENTIDO UNITÁRIO E DISTANCIA X E Y DA CASA ATUAL ATÉ A CASA DE DESTINO
@@ -43,4 +36,8 @@ public class PedraBranca extends PecaBase {
         return cor;
     }
 
+    @Override
+    public boolean podeMover(Cor vezAtual) {
+        return vezAtual == this.cor;
+    }
 }

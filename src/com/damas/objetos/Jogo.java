@@ -36,7 +36,7 @@ public class Jogo {
     }
 
     /**
-     * Realiza uma serie de paços para comandar uma peça na posicão 
+     * Realiza uma serie de paços para comandar uma peça na posicão
      * (origemX, origemY) fazer um movimento para (destinoX, destinoY).
      *
      * @param origemX - {@code int} linha da Casa de origem.
@@ -92,7 +92,7 @@ public class Jogo {
      * <p>
      * Percorre as casas da casa de origem clicada até a casa de destino clicada,
      * verifica se o caminho é valido e adiciona casas a variável {@code pecasAComer}
-     * </p> 
+     * </p>
      *
      * @param origem {@code Casa} de origem
      * @param destino {@code Casa} de destino
