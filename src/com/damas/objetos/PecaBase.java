@@ -4,8 +4,10 @@ package com.damas.objetos;
  public abstract class PecaBase implements Peca {
     protected Casa casa;
     protected Cor cor;
+
     public PecaBase(Casa casa, Cor cor) {
         this.casa = casa;
+        this.cor = cor;
         casa.colocarPeca(this);
     }
 
@@ -15,7 +17,17 @@ package com.damas.objetos;
         destino.colocarPeca(this);
         casa = destino;
     }
- }
+
+    @Override
+    public Cor getCor() {
+        return cor;
+    }
+
+    @Override
+    public boolean podeMover(Cor vezAtual) {
+        return vezAtual == this.cor;
+    }
+}
 
 
 

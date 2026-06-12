@@ -4,12 +4,14 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import com.damas.objetos.Casa;
+import com.damas.objetos.Dama;
 import com.damas.objetos.Jogo;
+import com.damas.objetos.Pedra;
 import com.damas.objetos.Tabuleiro;
 
 /**
  * Interface Grafica do Tabuleiro do jogo.
- * 
+ *
  * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
  * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
  */
@@ -76,13 +78,13 @@ public class TabuleiroGUI extends JPanel {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 CasaGUI casaGUI = casas[x][y];
-                
+
                 Tabuleiro tabuleiro = jogo.getTabuleiro();
                 Casa casa = tabuleiro.getCasa(x, y);
                 if (casa.possuiPeca()) {
                     Pedra peca = casa.getPeca();
 
-                    switch (peca.getCor()) {
+                    switch (peca.getTipo()) {
                         case Pedra.PEDRA_BRANCA:
                             casaGUI.desenharPedraBranca();
                             break;

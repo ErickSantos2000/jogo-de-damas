@@ -4,7 +4,6 @@ public class PedraBranca extends PecaBase {
 
     public PedraBranca(Casa casa) {
         super(casa, Cor.BRANCA);
-        casa.colocarPeca(this);
     }
 
     @Override

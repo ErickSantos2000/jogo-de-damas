@@ -1,11 +1,9 @@
 package com.damas.objetos;
 
 public class PedraVermelha extends PecaBase {
-    protected Cor cor;
 
     public PedraVermelha(Casa casa) {
         super(casa, Cor.VERMELHA);
-        casa.colocarPeca(this);
     }
 
     @Override
@@ -30,15 +28,5 @@ public class PedraVermelha extends PecaBase {
         }
 
         return false;
-    }
-
-    @Override
-    public Cor getCor() {
-        return cor;
-    }
-
-    @Override
-    public boolean podeMover(Cor vezAtual) {
-        return vezAtual == this.cor;
     }
 }
