@@ -50,8 +50,8 @@ public class Jogo {
         Pedra peca = origem.getPeca();
 
         if (casaBloqueadaOrigem == null) {
-            if ((getVez() == 1 && (peca.getTipo() == Pedra.PEDRA_BRANCA || peca.getTipo() == Pedra.DAMA_BRANCA)) ||
-                (getVez() == 2 && (peca.getTipo() == Pedra.PEDRA_VERMELHA || peca.getTipo() == Pedra.DAMA_VERMELHA))) {
+            if ((getVez() == 1 && (peca.getCor() == Pedra.PEDRA_BRANCA || peca.getCor() == Pedra.DAMA_BRANCA)) ||
+                (getVez() == 2 && (peca.getCor() == Pedra.PEDRA_VERMELHA || peca.getCor() == Pedra.DAMA_VERMELHA))) {
 
                 if (peca.isMovimentoValido(destino)) {
 
@@ -117,14 +117,14 @@ public class Jogo {
 
         // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 2 BLOCOS
         if ((distanciaX == 2 && distanciaY == 2) &&
-            ((peca.getTipo() == Pedra.PEDRA_BRANCA) || (peca.getTipo() == Pedra.PEDRA_VERMELHA))) {
+            ((peca.getCor() == Pedra.PEDRA_BRANCA) || (peca.getCor() == Pedra.PEDRA_VERMELHA))) {
 
             Casa casa = tabuleiro.getCasa((destino.getX() - sentidoX), (destino.getY() - sentidoY));
             if (casa.getPeca() == null) return false;
         } else {
 
             // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 1 BLOCO
-            if (peca.getTipo() == Pedra.PEDRA_BRANCA) {
+            if (peca.getCor() == Pedra.PEDRA_BRANCA) {
                 if ((distanciaX == 1 || distanciaY == 1) && (distanciaX == distanciaY) && sentidoY == 1) {
                     return true;
                 } else {
@@ -132,7 +132,7 @@ public class Jogo {
                 }
             } else {
                 // REGRA DE MOVIMENTO DAS PEDRAS VERMELHAS
-                if (peca.getTipo() == Pedra.PEDRA_VERMELHA) {
+                if (peca.getCor() == Pedra.PEDRA_VERMELHA) {
                     if ((distanciaX == 1 || distanciaY == 1) && (distanciaX == distanciaY) && sentidoY == -1) {
                         return true;
                     } else {
@@ -159,12 +159,12 @@ public class Jogo {
                 casasComPecaSeguidas += 1;
 
                 // VE SE TEM UMA PECA DO MESMO TIPO NO CAMNHO, CASO TENHA, RETORNA FALSE
-                if ((peca.getTipo() == Peca.PEDRA_BRANCA || peca.getTipo() == Peca.DAMA_BRANCA) && (pecaAlvo.getTipo() == Pedra.PEDRA_BRANCA || pecaAlvo.getTipo() == Pedra.DAMA_BRANCA)) {
+                if ((peca.getCor() == Peca.PEDRA_BRANCA || peca.getCor() == Peca.DAMA_BRANCA) && (pecaAlvo.getCor() == Pedra.PEDRA_BRANCA || pecaAlvo.getCor() == Pedra.DAMA_BRANCA)) {
                     if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
                     return false;
                 }
 
-                if ((peca.getTipo() == Peca.PEDRA_VERMELHA || peca.getTipo() == Peca.DAMA_VERMELHA) && (pecaAlvo.getTipo() == Pedra.PEDRA_VERMELHA || pecaAlvo.getTipo() == Pedra.DAMA_VERMELHA)) {
+                if ((peca.getCor() == Peca.PEDRA_VERMELHA || peca.getCor() == Peca.DAMA_VERMELHA) && (pecaAlvo.getCor() == Pedra.PEDRA_VERMELHA || pecaAlvo.getCor() == Pedra.DAMA_VERMELHA)) {
                     if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
                     return false;
                 }
@@ -209,7 +209,7 @@ public class Jogo {
         int pecasSeguidasNoCaminho = 0;
         
         // SE O TIPO FOR PEDRA
-        if ((peca.getTipo() == Peca.PEDRA_BRANCA) || (peca.getTipo() == Peca.PEDRA_VERMELHA)) {
+        if ((peca.getCor() == Peca.PEDRA_BRANCA) || (peca.getCor() == Peca.PEDRA_VERMELHA)) {
             
             x += deltaX;
             y += deltaY;
@@ -225,12 +225,12 @@ public class Jogo {
                     }
 
                     // VERIFICA SE A PEÇA NO CAMINHO É DA MESMA COR
-                    if ((peca.getTipo() == Peca.PEDRA_BRANCA) && 
-                        ((pecaAtual.getTipo() == Peca.DAMA_BRANCA || pecaAtual.getTipo() == Peca.PEDRA_BRANCA))) {
+                    if ((peca.getCor() == Peca.PEDRA_BRANCA) &&
+                        ((pecaAtual.getCor() == Peca.DAMA_BRANCA || pecaAtual.getCor() == Peca.PEDRA_BRANCA))) {
                             return false;
                     } else {
-                        if ((peca.getTipo() == Peca.PEDRA_VERMELHA) && 
-                        ((pecaAtual.getTipo() == Peca.DAMA_VERMELHA || pecaAtual.getTipo() == Peca.PEDRA_VERMELHA))) {
+                        if ((peca.getCor() == Peca.PEDRA_VERMELHA) &&
+                        ((pecaAtual.getCor() == Peca.DAMA_VERMELHA || pecaAtual.getCor() == Peca.PEDRA_VERMELHA))) {
                             return false;
                         }
                     }
@@ -255,12 +255,12 @@ public class Jogo {
                         pecasSeguidasNoCaminho += 1;
         
                         // VERIFICA SE HÁ ALGUMA PEÇA DO MESMO TIPO NO CAMINHO SE SIM, RETORNA FALSE;
-                        if ((peca.getTipo() == Peca.DAMA_BRANCA) && 
-                            ((pecaAtual.getTipo() == Peca.PEDRA_BRANCA) || (pecaAtual.getTipo() == Peca.DAMA_BRANCA))) {
+                        if ((peca.getCor() == Peca.DAMA_BRANCA) &&
+                            ((pecaAtual.getCor() == Peca.PEDRA_BRANCA) || (pecaAtual.getCor() == Peca.DAMA_BRANCA))) {
                                 return false;
                         } else {
-                            if ((peca.getTipo() == Peca.DAMA_VERMELHA) && 
-                            ((pecaAtual.getTipo() == Peca.PEDRA_VERMELHA) || (pecaAtual.getTipo() == Peca.DAMA_VERMELHA))) {
+                            if ((peca.getCor() == Peca.DAMA_VERMELHA) &&
+                            ((pecaAtual.getCor() == Peca.PEDRA_VERMELHA) || (pecaAtual.getCor() == Peca.DAMA_VERMELHA))) {
                                     return false;
                             }   
                         }
@@ -342,12 +342,12 @@ public class Jogo {
     private boolean podeTransformarParaDama(Casa casa) {
         
         // REGRA PARA PEÇAS BRANCAS
-        if (casa.getPeca().getTipo() == Peca.PEDRA_BRANCA) {
+        if (casa.getPeca().getCor() == Peca.PEDRA_BRANCA) {
             if (casa.getY() == 7) return true;
         }
         
         // REGRA PARA PEÇAS VERMELHAS
-        if (casa.getPeca().getTipo() == Peca.PEDRA_VERMELHA) {
+        if (casa.getPeca().getCor() == Peca.PEDRA_VERMELHA) {
             if (casa.getY() == 0) return true;
         }
 
@@ -361,7 +361,7 @@ public class Jogo {
     private void transformarPedraParaDama(Casa casa) {
         Pedra pedra = casa.getPeca();
 
-        if (pedra.getTipo() == Peca.PEDRA_BRANCA) {
+        if (pedra.getCor() == Peca.PEDRA_BRANCA) {
             Dama dama = new Dama(casa, Peca.DAMA_BRANCA);
             pedra = (Dama) dama;
         } else {

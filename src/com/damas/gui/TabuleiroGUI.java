@@ -84,7 +84,7 @@ public class TabuleiroGUI extends JPanel {
                 if (casa.possuiPeca()) {
                     Pedra peca = casa.getPeca();
 
-                    switch (peca.getTipo()) {
+                    switch (peca.getCor()) {
                         case Pedra.PEDRA_BRANCA:
                             casaGUI.desenharPedraBranca();
                             break;

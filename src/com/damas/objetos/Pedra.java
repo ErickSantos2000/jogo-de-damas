@@ -55,7 +55,7 @@ public class Pedra implements Peca {
     }
 
     @Override
-    public int getTipo() {
+    public int getCor() {
         return tipo;
     }
 }
