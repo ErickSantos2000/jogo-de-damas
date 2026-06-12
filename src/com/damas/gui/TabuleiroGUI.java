@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 import com.damas.objetos.Casa;
 import com.damas.objetos.Dama;
 import com.damas.objetos.Jogo;
-import com.damas.objetos.Pedra;
 import com.damas.objetos.Tabuleiro;
 
 /**
