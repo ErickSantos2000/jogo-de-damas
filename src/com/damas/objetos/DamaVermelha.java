@@ -17,6 +17,11 @@ public class DamaVermelha extends PecaBase{
     }
 
     @Override
+    public Cor getCor() {
+        return cor;
+    }
+
+    @Override
     public boolean podeMover(Cor vezAtual) {
         return vezAtual == this.cor;
     }
