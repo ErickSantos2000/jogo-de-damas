@@ -3,7 +3,7 @@ package com.damas.objetos;
 public class PedraBranca extends PecaBase {
 
     public PedraBranca(Casa casa) {
-        super(casa, Cor.BRANCA);
+        super(casa, Cor.BRANCA, TipoPeca.PEDRA);
     }
 
     @Override
@@ -28,15 +28,5 @@ public class PedraBranca extends PecaBase {
         }
 
         return false;
-    }
-
-    @Override
-    public Cor getCor() {
-        return cor;
-    }
-
-    @Override
-    public boolean podeMover(Cor vezAtual) {
-        return vezAtual == this.cor;
     }
 }

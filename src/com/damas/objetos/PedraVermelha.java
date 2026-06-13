@@ -3,7 +3,7 @@ package com.damas.objetos;
 public class PedraVermelha extends PecaBase {
 
     public PedraVermelha(Casa casa) {
-        super(casa, Cor.VERMELHA);
+        super(casa, Cor.VERMELHA, TipoPeca.PEDRA);
     }
 
     @Override

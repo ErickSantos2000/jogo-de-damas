@@ -80,7 +80,7 @@ public class TabuleiroGUI extends JPanel {
                 if (casa.possuiPeca()) {
                     Peca peca = casa.getPeca();
 
-                    PecaGUI visual = new PecaGUI(casa.getPeca());
+                    PecaGUI visual = new PecaGUI(peca);
                     visual.desenhar(casaGUI);
                 }
                 else {

@@ -6,9 +6,10 @@ package com.damas.objetos;
     protected Cor cor;
     protected TipoPeca tipoPeca;
 
-    public PecaBase(Casa casa, Cor cor) {
+    public PecaBase(Casa casa, Cor cor, TipoPeca tipoPeca) {
         this.casa = casa;
         this.cor = cor;
+        this.tipoPeca = tipoPeca;
         casa.colocarPeca(this);
     }
 
