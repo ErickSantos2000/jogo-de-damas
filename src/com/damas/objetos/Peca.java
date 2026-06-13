@@ -31,4 +31,5 @@ public interface Peca {
      */
     abstract public Cor getCor();
     abstract public boolean podeMover(Cor vezAtual);
+    abstract public TipoPeca getTipo();
 }
