@@ -6,4 +6,9 @@ public class DamaBranca extends PecaBase{
         super(casa, Cor.BRANCA, TipoPeca.DAMA);
     }
 
+    @Override
+    public boolean validarRegrasDeDeslocamento(int sentidoY, int distancia) {
+        // como não tem restrições para Damas, o metodo so retorna true
+        return true;
+    }
 }

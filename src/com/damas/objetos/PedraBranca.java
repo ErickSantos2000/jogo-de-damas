@@ -7,26 +7,13 @@ public class PedraBranca extends PecaBase {
     }
 
     @Override
-    public boolean isMovimentoValido(Casa destino) {
+    public boolean validarRegrasDeDeslocamento(int sentidoY, int distancia) {
+        // logica de movimento para comer peca no caminho
+        // aqui no caso a verificação em relação a distancia é 2 para qualquer sentido
+        if(distancia == 2) return true;
 
-        // SENTIDO UNITÁRIO E DISTANCIA X E Y DA CASA ATUAL ATÉ A CASA DE DESTINO
-        // Cacula a distancia que a peça esta se movimentando: horizontalmete (distanciaX) e verticalmente (distanciaY)
-        // O uso de Math.abs garante que o resultado seja sempre um numero positivo, ignorando a direção
-        int distanciaX = Math.abs(destino.getX() - casa.getX());
-        int distanciaY = Math.abs(destino.getY() - casa.getY());
-
-        // garante que o movimento seja estritamente diagonal
-        // em um tabuleiro, andar na diagonal significa avançar o mesmo numero de casas em X e em Y
-        if ((distanciaX == 0) || (distanciaY == 0)) return false;
-
-        // REGRA DE MOVIMENTO NO CASO DA DISTÂNCIA SER DE 2 CASAS (MOVIMENTO DE COMER PEÇA)
-        // limita o alacance do movimento a no maximo duas casas
-        // Como as distancias já são iguais devido a regra anterior, a peça so
-        // pode andar exatamente 1 casa (movimento normal) ou exatamente 2 casas (comum para pular/comer uma peça adversária).
-        if ((distanciaX <= 2 || distanciaY <= 2) && (distanciaX == distanciaY)) {
-            return true;
-        }
-
-        return false;
+        // logica de movimento padrão da peca
+        // pecas brancas se movem apenas para cima(no sentido do Y)
+        return sentidoY == 1 && distancia == 1;
     }
 }
