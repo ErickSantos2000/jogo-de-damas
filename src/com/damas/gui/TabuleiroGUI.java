@@ -80,20 +80,8 @@ public class TabuleiroGUI extends JPanel {
                 if (casa.possuiPeca()) {
                     Peca peca = casa.getPeca();
 
-                    switch (peca.getCor()) {
-                        case Pedra.PEDRA_BRANCA:
-                            casaGUI.desenharPedraBranca();
-                            break;
-                        case Dama.DAMA_BRANCA:
-                            casaGUI.desenharDamaBranca();
-                            break;
-                        case Pedra.PEDRA_VERMELHA:
-                            casaGUI.desenharPedraVermelha();
-                            break;
-                        case Dama.DAMA_VERMELHA:
-                            casaGUI.desenharDamaVermelha();
-                            break;
-                    }
+                    PecaGUI visual = new PecaGUI(casa.getPeca());
+                    visual.desenhar(casaGUI);
                 }
                 else {
                     casaGUI.apagarPeca();
