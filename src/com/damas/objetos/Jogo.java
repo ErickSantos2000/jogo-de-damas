@@ -132,25 +132,6 @@ public class Jogo {
 
             Casa casa = tabuleiro.getCasa((destino.getX() - sentidoX), (destino.getY() - sentidoY));
             if (casa.getPeca() == null) return false;
-        } else {
-
-            // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 1 BLOCO
-            if (peca.getCor() == Cor.BRANCA) {
-                if ((distanciaX == 1 || distanciaY == 1) && (distanciaX == distanciaY) && sentidoY == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                // REGRA DE MOVIMENTO DAS PEDRAS VERMELHAS
-                if (peca.getCor() == Cor.VERMELHA) {
-                    if ((distanciaX == 1 || distanciaY == 1) && (distanciaX == distanciaY) && sentidoY == -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
         }
 
         //PERCORRER AS CASAS E VERIFICAR:
