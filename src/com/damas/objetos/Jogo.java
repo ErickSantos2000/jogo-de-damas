@@ -107,31 +107,16 @@ public class Jogo {
         if (destino.getPeca() != null) return false;
 
         // SENTIDO DO MOVIMENTO E DISTÂNCIA DO MOVIMENTO
-        //  desntinoX = 6, origemX = 4
-        // destinoY = 4, origemY = 2
-        int sentidoX = (destino.getX() - origem.getX()); // tem que ser sempre ou mais
+        int sentidoX = (destino.getX() - origem.getX());
         int sentidoY = (destino.getY() - origem.getY());
-        // sentidoX = 6 - 4 = 2
-        // sentidoY = 4 - 2 = 2
-        int distanciaX = Math.abs(sentidoX); // garante valores positivos
+
+        int distanciaX = Math.abs(sentidoX);
         int distanciaY = Math.abs(sentidoY);
-        // distanciaY = (2)
-        // distanciaX = (2)
 
         if ((distanciaX == 0) || (distanciaY == 0)) return false;
 
         sentidoX = sentidoX/distanciaX;
         sentidoY = sentidoY/distanciaY;
-
-        // sentidoY = 1
-        // sentidoX = 1
-
-        // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 2 BLOCOS
-        if (peca.ehCaptura()) {
-
-            Casa casa = tabuleiro.getCasa((destino.getX() - sentidoX), (destino.getY() - sentidoY));
-            if (casa.getPeca() == null) return false;
-        }
 
         //PERCORRER AS CASAS E VERIFICAR:
         // 1 - SE HÁ MAIS DE UMA PEÇA SEGUIDA NO CAMINHO (VERDADEIRO RETORNA FALSO)
@@ -139,7 +124,7 @@ public class Jogo {
         int i = origem.getX();
         int j = origem.getY();
 
-        while (!((i == destino.getX()) || (j == destino.getY()))) {
+        while (i != destino.getX() && j != destino.getY()) {
             i += sentidoX;
             j += sentidoY;
 
@@ -147,11 +132,11 @@ public class Jogo {
             Peca pecaAlvo = alvo.getPeca();
 
             if (pecaAlvo != null) {
-                casasComPecaSeguidas += 1;
+                casasComPecaSeguidas++;
 
                 // VE SE TEM UMA PECA DO MESMO TIPO NO CAMNHO, CASO TENHA, RETORNA FALSE
                 if(peca.getCor() == pecaAlvo.getCor()){
-                    pecasAComer.clear(); // limpa a lista de capturas pois o movimento falhou
+                     // limpa a lista de capturas pois o movimento falhou
                     return false;
                 }
 
@@ -165,10 +150,12 @@ public class Jogo {
                 casasComPecaSeguidas = 0;
             }
 
-            if (casasComPecaSeguidas == 2) {
-                if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
-                return false;
-            }
+
+        }
+
+        if (!peca.ehCaptura(distanciaX, pecasAComer.size())) {
+            pecasAComer.clear();
+            return false;
         }
         return true;
     }
