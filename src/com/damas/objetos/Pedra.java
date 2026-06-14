@@ -21,7 +21,7 @@ public class Pedra extends PecaBase {
     }
 
     @Override
-    public boolean ehCaptura(int distancia,  int capturdas) {
+    public boolean podeCapturar(int distancia, int capturdas) {
         if(distancia == 2){
             return capturdas == 1;
         }

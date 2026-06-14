@@ -153,7 +153,7 @@ public class Jogo {
 
         }
 
-        if (!peca.ehCaptura(distanciaX, pecasAComer.size())) {
+        if (!peca.podeCapturar(distanciaX, pecasAComer.size())) {
             pecasAComer.clear();
             return false;
         }
