@@ -12,8 +12,7 @@ public class Pedra extends PecaBase {
     @Override
     public boolean validarRegrasDeDeslocamento(int sentidoY, int distancia) {
 
-        if (distancia == 2)
-            return true;
+        if (distancia == 2) return true;
 
         // remove a necessidade pela cor, ao inves disso é perguntado diretamente ao enum
         int direcaoPermitida = cor.getSentido();
@@ -22,7 +21,10 @@ public class Pedra extends PecaBase {
     }
 
     @Override
-    public boolean ehCaptura() {
-        return true;
+    public boolean ehCaptura(int distancia,  int capturdas) {
+        if(distancia == 2){
+            return capturdas == 1;
+        }
+        return capturdas == 0;
     }
 }

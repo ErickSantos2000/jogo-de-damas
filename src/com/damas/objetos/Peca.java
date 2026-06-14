@@ -36,5 +36,5 @@ public interface Peca {
     abstract public Cor getCor();
     abstract public boolean podeMover(Cor vezAtual);
     abstract public TipoPeca getTipo();
-    abstract  public boolean ehCaptura();
+    abstract  public boolean ehCaptura(int distancia, int capturadas);
 }

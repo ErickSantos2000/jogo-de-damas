@@ -13,7 +13,7 @@ public class Dama extends PecaBase {
     }
 
     @Override
-    public boolean ehCaptura() {
-        return false;
+    public boolean ehCaptura(int distancia, int capturadas) {
+        return capturadas <= 1;
     }
 }
