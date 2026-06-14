@@ -127,7 +127,7 @@ public class Jogo {
         // sentidoX = 1
 
         // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 2 BLOCOS
-        if (peca.ehCaptura(distanciaX)) {
+        if (peca.ehCaptura()) {
 
             Casa casa = tabuleiro.getCasa((destino.getX() - sentidoX), (destino.getY() - sentidoY));
             if (casa.getPeca() == null) return false;
@@ -348,11 +348,9 @@ public class Jogo {
         Peca pedra = casa.getPeca();
 
         if (pedra.getCor() == Cor.BRANCA) {
-            DamaBranca damaBranca = new DamaBranca(casa);
-            pedra = (DamaBranca) damaBranca;
+            Dama damaBranca = new Dama(casa, Cor.BRANCA);
         } else {
-            DamaVermelha damaVermelha = new DamaVermelha(casa);
-            pedra = (DamaVermelha) damaVermelha;
+            Dama damaVermelha = new Dama(casa, Cor.VERMELHA);
         }
     }
 
@@ -368,12 +366,12 @@ public class Jogo {
             for (int y = 0; y < 3; y++) {
                 if((x % 2 == 0) && (y % 2 == 0)) {
                     Casa casa = tabuleiro.getCasa(x, y);
-                    new PedraBranca(casa);
+                    new Pedra(casa, Cor.BRANCA);
                 }
 
                 else if ((x % 2 != 0) && (y % 2 != 0)){
                     Casa casa = tabuleiro.getCasa(x, y);
-                    new PedraBranca(casa);
+                    new Pedra(casa, Cor.BRANCA);
                 }
             }
 
@@ -383,11 +381,11 @@ public class Jogo {
             for (int y = 5; y < 8; y++) {
                 if ((x % 2 != 0) && (y % 2 != 0)) {
                     Casa casa = tabuleiro.getCasa(x, y);
-                    new PedraVermelha(casa);
+                    new Pedra(casa, Cor.VERMELHA);
                 }
                 else if ((x % 2 == 0) && (y % 2 == 0)) {
                     Casa casa = tabuleiro.getCasa(x, y);
-                    new PedraVermelha(casa);
+                    new Pedra(casa, Cor.VERMELHA);
                 }
             }
         }

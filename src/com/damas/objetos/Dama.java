@@ -1,0 +1,19 @@
+package com.damas.objetos;
+
+public class Dama extends PecaBase {
+
+    public Dama(Casa casa, Cor cor) {
+        super(casa, cor, TipoPeca.DAMA);
+    }
+
+    @Override
+    public boolean validarRegrasDeDeslocamento(int sentidoY, int distancia) {
+
+        return true;
+    }
+
+    @Override
+    public boolean ehCaptura() {
+        return false;
+    }
+}
