@@ -11,13 +11,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-/**
- * Interface Grafica de uma Casa no tabuleiro do jogo.
- *
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
- * @author João Victor da S. Cirilo {@link joao.cirilo@academico.ufpb.br}
- */
 public class CasaGUI extends JButton {
 
     // Constantes 
@@ -119,9 +112,6 @@ public class CasaGUI extends JButton {
         setBackground(cor);
     }
 
-    /**
-     * Pinta o componente com a cor de fundo, aceita valores RGBA
-     */
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(getBackground());

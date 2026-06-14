@@ -7,14 +7,6 @@ import javax.swing.JOptionPane;
 
 import com.damas.objetos.Jogo;
 
-/**
- * Tela do jogo.
- * Responsável por reagir aos cliques feitos pelo jogador. 
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
- * @author Arthur Miranda Tavares {@link arthur.miranda@academico.ufpb.br}
- */
-
 public class JanelaPrincipal extends JFrame {
 
     private Jogo jogo;

@@ -34,15 +34,6 @@ public class Jogo {
         colocarPecas(tabuleiro);
     }
 
-    /**
-     * Realiza uma serie de paços para comandar uma peça na posicão
-     * (origemX, origemY) fazer um movimento para (destinoX, destinoY).
-     *
-     * @param origemX - {@code int} linha da Casa de origem.
-     * @param origemY - {@code int} coluna da Casa de origem.
-     * @param destinoX - {@code int} linha da Casa de destino.
-     * @param destinoY - {@code int} coluna da Casa de destino.
-     */
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
         // casa de origem
         Casa origem = tabuleiro.getCasa(origemX, origemY);
@@ -90,16 +81,6 @@ public class Jogo {
         }
     }
 
-    /**
-     * <p>
-     * Percorre as casas da casa de origem clicada até a casa de destino clicada,
-     * verifica se o caminho é valido e adiciona casas a variável {@code pecasAComer}
-     * </p>
-     *
-     * @param origem {@code Casa} de origem
-     * @param destino {@code Casa} de destino
-     * @return {@code boolean} se a simulação ocorreu bem
-     */
     private boolean simularMovimentoEValidar(Casa origem, Casa destino) {
         Peca peca = origem.getPeca();
         int casasComPecaSeguidas = 0;
@@ -160,20 +141,6 @@ public class Jogo {
         return true;
     }
 
-    /**
-     * <p>
-     * Percorre as casas do tabuleirio a partir da casa de origem indicada no sentido dado
-     * por {@code sentidoX} e {@code sentidoY} até o limite do tabuleiro.
-     * </p>
-     * @param origem Casa de origem da peça
-     * @param deltaX {@code Tabuleiro.X_ESQUERDA} ou {@code Tabuleiro.X_DIREITA}
-     * @param deltaY {@code Tabuleiro.Y_BAIXO} ou {@code Tabuleiro.Y_CIMA}
-     * @return
-     * {@code false} - se não há peça para comer
-     * <li> {@code false} - se houver mais de uma peça no caminho </li>
-     * <li> {@code false} - se houver peça de mesma cor no caminho </li>
-     * <li> {@code true} - se há peça para comer </li>
-     */
     private boolean percorrerEVerificar(Casa origem, int deltaX, int deltaY) {
 
         Peca peca = origem.getPeca();
@@ -256,14 +223,6 @@ public class Jogo {
         return false;
     }
 
-    /**
-     * <p>
-     * Dispara o método {@code percorrerEVerificar()} no sentido
-     * das quatro diagonais a partir da casa indicada.
-     * </p>
-     * @param origem tipo {@code Casa} de onde vai partir a verifição
-     * @return {@code true} Se há peça para comer em alguma diagonal
-     */
     private boolean deveContinuarJogando(Casa origem) {
 
         if (percorrerEVerificar(origem, Tabuleiro.X_ESQUERDA, Tabuleiro.Y_CIMA)) {
@@ -289,9 +248,6 @@ public class Jogo {
         return false;
     }
 
-    /**
-     * Limpa as peças na variável {@code ArrayList pecasAComer}, adiciona pontos ao jogador
-     */
     private void comerPecas() {
         int pecasComidas = pecasAComer.size();
 
@@ -307,11 +263,6 @@ public class Jogo {
         jogadasSemComerPeca = 0;
     }
 
-    /**
-     * Verifica se a pedra da casa pode virar dama.
-     * @param casa {@code Casa}
-     * @return {@code boolean}
-     */
     private boolean podeTransformarParaDama(Casa casa) {
         Peca peca = casa.getPeca();
 
@@ -322,10 +273,6 @@ public class Jogo {
         return casa.getY() == peca.getCor().getLinhaPromocao();
     }
 
-    /**
-     * Transforma a pedra da casa passada como parametro em dama
-     * @param casa - tipo {@code Casa} contendo a peça a ser ser transformada.
-     */
     private void transformarPedraParaDama(Casa casa) {
         Peca pedra = casa.getPeca();
 
@@ -335,11 +282,6 @@ public class Jogo {
         new Dama(casa, pedra.getCor());
     }
 
-    /**
-     * Posiciona peças no tabuleiro.
-     * Utilizado na inicialização do jogo.
-     * @param tabuleiro - tipo {@code Tabuleiro} onde as peças serão posicionadas
-     */
     public void colocarPecas(Tabuleiro tabuleiro) {
 
         // CRIA E PÕE AS PEÇAS NA PARTE INFERIOR DO TABULEIRO
@@ -383,13 +325,6 @@ public class Jogo {
         }
     }
 
-    /**
-     *
-     * @return
-     * {@code int } 0 - Nenhum jogador
-     * <li> {@code int} 1 - Jogador um </li>
-     * <li> {@code int} 1 - Jogador dois </li>
-     */
     public int getGanhador() {
         if (jogadorUm.getPontos() == 12) return 1;
         if (jogadorDois.getPontos() == 12) return 2;
@@ -419,11 +354,6 @@ public class Jogo {
         return jogadorDois;
     }
 
-    /**
-     * @return
-     *      {@code int} 1 - jogador branco
-     *  <li>{@code int} 2 - jogador vermelho </li>
-     */
     public Cor getVez() {
         return vezAtual;
     }

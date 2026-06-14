@@ -1,12 +1,5 @@
 package com.damas.objetos;
 
-/**
- * O Tabuleiro do jogo.
- * Responsável por armazenar as 64 casas do jogo.
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
- */
-
 public class Tabuleiro {
     
     public static final int MAX_LINHAS = 8;
@@ -24,9 +17,6 @@ public class Tabuleiro {
         montarTabuleiro();
     }
 
-    /**
-     * Adiciona as Casas no tabuleiro
-     */
     private void montarTabuleiro() {
         casas = new Casa[MAX_LINHAS][MAX_COLUNAS];
         for (int x = 0; x < MAX_LINHAS; x++) {
@@ -37,11 +27,6 @@ public class Tabuleiro {
         }
     }
 
-    /**
-     * @param x linha
-     * @param y coluna
-     * @return Casa na posicao (x,y)
-     */
     public Casa getCasa(int x, int y) {
         return casas[x][y];
     }
