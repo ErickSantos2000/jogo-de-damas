@@ -326,18 +326,13 @@ public class Jogo {
      * @return {@code boolean}
      */
     private boolean podeTransformarParaDama(Casa casa) {
+        Peca peca = casa.getPeca();
 
-        // REGRA PARA PEÇAS BRANCAS
-        if (casa.getPeca().getCor() == Cor.BRANCA) {
-            if (casa.getY() == 7) return true;
-        }
+        // se a casa estiver vazia, não ha o que promover
+        if (peca == null) return false;
 
-        // REGRA PARA PEÇAS VERMELHAS
-        if (casa.getPeca().getCor() == Cor.VERMELHA) {
-            if (casa.getY() == 0) return true;
-        }
-
-        return false;
+        // o jogo apenas compara a posição y atual da peca com a linha que o Enum daquela cor manda
+        return casa.getY() == peca.getCor().getLinhaPromocao();
     }
 
     /**
@@ -347,11 +342,10 @@ public class Jogo {
     private void transformarPedraParaDama(Casa casa) {
         Peca pedra = casa.getPeca();
 
-        if (pedra.getCor() == Cor.BRANCA) {
-            Dama damaBranca = new Dama(casa, Cor.BRANCA);
-        } else {
-            Dama damaVermelha = new Dama(casa, Cor.VERMELHA);
-        }
+        if(pedra == null) return;
+
+        // instancia a Dama passando a cor exata da pedra que chegou la
+        new Dama(casa, pedra.getCor());
     }
 
     /**
