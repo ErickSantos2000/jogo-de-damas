@@ -204,6 +204,7 @@ public class Jogo {
                                 return false;
                             }
                         }
+
                     } else {
 
                         if (pecasSeguidasNoCaminho == 1) {

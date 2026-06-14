@@ -9,7 +9,7 @@ public interface Peca {
     abstract public void mover(Casa destino);
     abstract public boolean isMovimentoValido(Casa destino);
     abstract public Cor getCor();
-    abstract public boolean podeMover(Cor vezAtual);
+    abstract public boolean podeMover(Cor vezAtual); // informa qual é peca que tem a vez no no jogo
     abstract public TipoPeca getTipo();
-    abstract  public boolean podeCapturar(int distancia, int capturadas);
+    abstract  public boolean podeCapturar(int distancia, int capturas);
 }

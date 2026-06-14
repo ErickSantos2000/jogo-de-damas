@@ -9,6 +9,8 @@ public class Pedra extends PecaBase {
         super(casa, cor, TipoPeca.PEDRA);
     }
 
+    // faz velidação de movimentação especifica para Pedra, definindo a quantidade de casas percorridas
+    // No caso a Pedra pode se mover por 1 ou 2 (caso seja um movimento de captura) casas
     @Override
     public boolean validarRegrasDeDeslocamento(int sentidoY, int distancia) {
 
@@ -17,14 +19,16 @@ public class Pedra extends PecaBase {
         // remove a necessidade pela cor, ao inves disso é perguntado diretamente ao enum
         int direcaoPermitida = cor.getSentido();
 
+        // verifica se a distancia da pedra é de apenas um e se esta no sentido correto
         return distancia == 1 && sentidoY == direcaoPermitida;
     }
 
+    // define as regras de captura de Pedra
     @Override
-    public boolean podeCapturar(int distancia, int capturdas) {
+    public boolean podeCapturar(int distancia, int capturas) {
         if(distancia == 2){
-            return capturdas == 1;
+            return capturas == 1;
         }
-        return capturdas == 0;
+        return capturas == 0;
     }
 }
