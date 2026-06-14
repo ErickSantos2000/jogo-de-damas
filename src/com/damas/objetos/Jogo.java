@@ -147,17 +147,12 @@ public class Jogo {
             Casa alvo = tabuleiro.getCasa(i, j);
             Peca pecaAlvo = alvo.getPeca();
 
-            if (!(pecaAlvo == null)) {
+            if (pecaAlvo != null) {
                 casasComPecaSeguidas += 1;
 
                 // VE SE TEM UMA PECA DO MESMO TIPO NO CAMNHO, CASO TENHA, RETORNA FALSE
-                if ((peca.getCor() == Cor.BRANCA || peca.getCor() == Cor.BRANCA) && (pecaAlvo.getCor() == Cor.BRANCA || pecaAlvo.getCor() == Cor.BRANCA)) {
-                    if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
-                    return false;
-                }
-
-                if ((peca.getCor() == Cor.BRANCA || peca.getCor() == Cor.BRANCA) && (pecaAlvo.getCor() == Cor.BRANCA || pecaAlvo.getCor() == Cor.BRANCA)) {
-                    if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
+                if(peca.getCor() == pecaAlvo.getCor()){
+                    pecasAComer.clear(); // limpa a lista de capturas pois o movimento falhou
                     return false;
                 }
 
