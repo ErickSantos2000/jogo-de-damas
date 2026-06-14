@@ -204,7 +204,6 @@ public class Jogo {
                                 return false;
                             }
                         }
-
                     } else {
 
                         if (pecasSeguidasNoCaminho == 1) {
@@ -225,28 +224,31 @@ public class Jogo {
     }
 
     private boolean deveContinuarJogando(Casa origem) {
+        // o jogo testa as 4 direcoes em volta da peca, se tiver uma
+        // peca inimiga que de para ser comida, a peca da vez de continuar
+        int[] direcoes = {-1, 1};
 
-        if (percorrerEVerificar(origem, Tabuleiro.X_ESQUERDA, Tabuleiro.Y_CIMA)) {
-            return true;
-        } else {
+        for (int dx : direcoes) {
+            for (int dy : direcoes) {
+                // testa um salto de 2 casas
+                int xDestino = origem.getX() + (dx * 2);
+                int yDestino = origem.getY() + (dy * 2);
 
-            if (percorrerEVerificar(origem, Tabuleiro.X_DIREITA, Tabuleiro.Y_CIMA)) {
-                return true;
-            } else {
+                // verifica os limites do tabuleiro
+                if (xDestino >= 0 && xDestino <= 7 && yDestino >= 0 && yDestino <= 7) {
+                    Casa destino = tabuleiro.getCasa(xDestino, yDestino);
 
-                if (percorrerEVerificar(origem, Tabuleiro.X_DIREITA, Tabuleiro.Y_BAIXO)) {
-                    return true;
-                } else {
-
-                    if (percorrerEVerificar(origem, Tabuleiro.X_ESQUERDA, Tabuleiro.Y_BAIXO)) {
-                        return true;
+                    // simula movimento para saber se deve continuar
+                    if (simularMovimentoEValidar(origem, destino)) {
+                        if (pecasAComer.size() > 0) {
+                            pecasAComer.clear();
+                            return true;
+                        }
                     }
                 }
             }
-
         }
-
-        return false;
+        return false; // Não achou nenhuma captura extra
     }
 
     private void comerPecas() {
