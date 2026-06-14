@@ -11,4 +11,9 @@ public class DamaBranca extends PecaBase{
         // como não tem restrições para Damas, o metodo so retorna true
         return true;
     }
+
+    @Override
+    public boolean ehCaptura(int distancia) {
+        return false;
+    }
 }

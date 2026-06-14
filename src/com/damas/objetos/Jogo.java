@@ -127,8 +127,7 @@ public class Jogo {
         // sentidoX = 1
 
         // REGRA DE MOVIMENTO DAS PEDRAS NO TABULEIRO CASO A DISTÂNCIA ATÉ A CASA CLICADA SEJA DE 2 BLOCOS
-        if ((distanciaX == 2 && distanciaY == 2) &&
-                ((peca.getCor() == Cor.BRANCA) || (peca.getCor() == Cor.VERMELHA))) {
+        if (peca.ehCaptura(distanciaX)) {
 
             Casa casa = tabuleiro.getCasa((destino.getX() - sentidoX), (destino.getY() - sentidoY));
             if (casa.getPeca() == null) return false;

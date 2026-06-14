@@ -16,4 +16,9 @@ public class PedraVermelha extends PecaBase {
         // pecas brancas se movem apenas para cima(no sentido do Y)
         return sentidoY == -1 && distancia == 1;
     }
+
+    @Override
+    public boolean ehCaptura(int distancia) {
+        return distancia == 2 ;
+    }
 }

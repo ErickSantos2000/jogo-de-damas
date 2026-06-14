@@ -11,4 +11,8 @@ public class DamaVermelha extends PecaBase{
         // como não tem restrições para Damas, o metodo so retorna true
         return true;
     }
+
+    public boolean ehCaptura(int distancia) {
+        return false;
+    }
 }

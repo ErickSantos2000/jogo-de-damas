@@ -22,6 +22,10 @@ public interface Peca {
     abstract public boolean isMovimentoValido(Casa destino);
 
     /**
+     * Retorna a cor da peça.
+     * @return {@code int} 1 para peças brancas e 2 para peças vermelhas.
+     */
+    /**
      * Retorna o tipo da peça
      * @return
      * {@code int} 0 - {@code Pedra} branca
@@ -32,4 +36,5 @@ public interface Peca {
     abstract public Cor getCor();
     abstract public boolean podeMover(Cor vezAtual);
     abstract public TipoPeca getTipo();
+    abstract public boolean ehCaptura(int distancia);
 }
