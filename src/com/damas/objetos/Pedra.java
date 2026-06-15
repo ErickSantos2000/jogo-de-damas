@@ -17,7 +17,7 @@ public class Pedra extends PecaBase {
         if (distancia == 2) return true;
 
         // remove a necessidade pela cor, ao inves disso é perguntado diretamente ao enum
-        int direcaoPermitida = cor.getSentido();
+        int direcaoPermitida = this.getCor().getSentido();
 
         // verifica se a distancia da pedra é de apenas um e se esta no sentido correto
         return distancia == 1 && sentidoY == direcaoPermitida;

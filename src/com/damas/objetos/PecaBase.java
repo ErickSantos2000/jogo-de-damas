@@ -1,9 +1,9 @@
 package com.damas.objetos;
 
 public abstract class PecaBase implements Peca {
-    protected Casa casa;
-    protected Cor cor;
-    protected TipoPeca tipoPeca;
+    private Casa casa;
+    private Cor cor;
+    private TipoPeca tipoPeca;
 
     public PecaBase(Casa casa, Cor cor, TipoPeca tipoPeca) {
         this.casa = casa;
