@@ -2,13 +2,6 @@ package com.damas.objetos;
 
 import java.util.ArrayList;
 
-/**
- * Armazena o tabuleiro e responsavel por posicionar as pecas.
- *
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
-
- */
 public class Jogo {
 
     private Tabuleiro tabuleiro;
@@ -31,7 +24,7 @@ public class Jogo {
         jogadasSemComerPeca = 0;
         casaBloqueadaOrigem = null;
 
-        colocarPecas(tabuleiro);
+        tabuleiro.colocarPecas();
     }
 
     public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
@@ -133,7 +126,6 @@ public class Jogo {
                 casasComPecaSeguidas = 0;
             }
 
-
         }
 
         if (!peca.podeCapturar(distanciaX, pecasAComer.size())) {
@@ -205,38 +197,6 @@ public class Jogo {
         peca.promover();
     }
 
-    public void colocarPecas(Tabuleiro tabuleiro) {
-
-        // CRIA E PÕE AS PEÇAS NA PARTE INFERIOR DO TABULEIRO
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 3; y++) {
-                if((x % 2 == 0) && (y % 2 == 0)) {
-                    Casa casa = tabuleiro.getCasa(x, y);
-                    new Pedra(casa, Cor.BRANCA);
-                }
-
-                else if ((x % 2 != 0) && (y % 2 != 0)){
-                    Casa casa = tabuleiro.getCasa(x, y);
-                    new Pedra(casa, Cor.BRANCA);
-                }
-            }
-
-        }
-        // CRIA E POE AS PEÇAS NA PARTE SUPERIOR DO TABULEIRO
-        for (int x = 0; x < 8; x++) {
-            for (int y = 5; y < 8; y++) {
-                if ((x % 2 != 0) && (y % 2 != 0)) {
-                    Casa casa = tabuleiro.getCasa(x, y);
-                    new Pedra(casa, Cor.VERMELHA);
-                }
-                else if ((x % 2 == 0) && (y % 2 == 0)) {
-                    Casa casa = tabuleiro.getCasa(x, y);
-                    new Pedra(casa, Cor.VERMELHA);
-                }
-            }
-        }
-    }
-
     /**
      * Troca a vez do jogador que pode mover no tabuleiro
      */
@@ -254,9 +214,6 @@ public class Jogo {
         return 0;
     }
 
-    /**
-     * @return o Tabuleiro em jogo.
-     */
     public Tabuleiro getTabuleiro() {
         return tabuleiro;
     }
