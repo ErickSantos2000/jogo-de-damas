@@ -292,35 +292,4 @@ public class Jogo {
     public Casa getCasaBloqueada() {
         return casaBloqueadaOrigem;
     }
-
-    @Override
-    public String toString() {
-
-        String retorno = "Vez: ";
-        if (getVez() == Cor.BRANCA) {
-            retorno += jogadorUm.getNome();
-            retorno += "\n";
-        } else if (getVez() == Cor.VERMELHA) {
-            retorno += jogadorDois.getNome();
-            retorno += "\n";
-        }
-
-        retorno += "Nº de jogadas: " + getJogada() + "\n";
-        retorno += "Jogadas sem comer peça: " + getJogadasSemComerPecas() + "\n";
-        retorno += "\n";
-        retorno += "Informações do(a) jogador(a) " + jogadorUm.getNome() + "\n";
-        retorno += "Pontos: " + jogadorUm.getPontos() + "\n";
-        retorno += "Nº de peças restantes: " + (12 - jogadorDois.getPontos()) + "\n";
-        retorno += "\n";
-        retorno += "Informações do(a) jogador(a) " + jogadorDois.getNome() + "\n";
-        retorno += "Pontos: " + jogadorDois.getPontos() + "\n";
-        retorno += "Nº de peças restantes: " + (12 - jogadorUm.getPontos()) + "\n";
-
-        if (casaBloqueadaOrigem != null) {
-            retorno += "\n";
-            retorno += "Mova a peça na casa " + casaBloqueadaOrigem.getX() + ":" + casaBloqueadaOrigem.getY() + "!";
-        }
-
-        return retorno;
-    }
 }
