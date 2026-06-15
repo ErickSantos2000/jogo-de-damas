@@ -12,4 +12,5 @@ public interface Peca {
     abstract public boolean podeMover(Cor vezAtual); // informa qual é peca que tem a vez no no jogo
     abstract public TipoPeca getTipo();
     abstract  public boolean podeCapturar(int distancia, int capturas);
+    abstract public void promover();
 }

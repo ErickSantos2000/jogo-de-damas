@@ -65,7 +65,9 @@ public class Jogo {
                         }
 
                         jogadas++;
-                        if (podeTransformarParaDama(destino)) transformarPedraParaDama(destino);
+                        if (this.podeTransformarParaDama(destino)) {
+                            this.transformarPedraParaDama(destino);
+                        }
                     }
                 }
             }
@@ -195,12 +197,12 @@ public class Jogo {
     }
 
     private void transformarPedraParaDama(Casa casa) {
-        Peca pedra = casa.getPeca();
+        Peca peca = casa.getPeca();
 
-        if(pedra == null) return;
+        if(peca == null) return;
 
         // instancia a Dama passando a cor exata da pedra que chegou la
-        new Dama(casa, pedra.getCor());
+        peca.promover();
     }
 
     public void colocarPecas(Tabuleiro tabuleiro) {

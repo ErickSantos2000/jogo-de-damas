@@ -19,6 +19,15 @@ public abstract class PecaBase implements Peca {
         casa = destino;
     }
 
+    @Override
+    public void promover(){
+        Casa casaAtual = this.getCasa();
+
+        casaAtual.removerPeca();
+
+        new Dama(casaAtual, this.getCor());
+    }
+
     // metodos especificos para cada classe filha implementar
     public abstract boolean validarRegrasDeDeslocamento(int sentidoY, int distancia);
 
@@ -56,6 +65,10 @@ public abstract class PecaBase implements Peca {
     @Override
     public boolean podeMover(Cor vezAtual) {
         return vezAtual == this.cor;
+    }
+
+    public Casa getCasa() {
+        return casa;
     }
 }
 
