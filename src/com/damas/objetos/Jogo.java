@@ -141,88 +141,6 @@ public class Jogo {
         return true;
     }
 
-    private boolean percorrerEVerificar(Casa origem, int deltaX, int deltaY) {
-
-        Peca peca = origem.getPeca();
-        int x = origem.getX();
-        int y = origem.getY();
-        int pecasSeguidasNoCaminho = 0;
-
-        // SE O TIPO FOR PEDRA
-        if ((peca.getCor() == Cor.BRANCA) || (peca.getCor() == Cor.BRANCA)) {
-
-            x += deltaX;
-            y += deltaY;
-
-            try {
-
-                Peca pecaAtual = tabuleiro.getCasa(x, y).getPeca();
-
-                if (!( pecaAtual == null)) {
-
-                    if (tabuleiro.getCasa((x + deltaX), (y + deltaY)).getPeca() != null) {
-                        return false;
-                    }
-
-                    // VERIFICA SE A PEÇA NO CAMINHO É DA MESMA COR
-                    if ((peca.getCor() == Cor.BRANCA) &&
-                            ((pecaAtual.getCor() == Cor.BRANCA|| pecaAtual.getCor() == Cor.BRANCA))) {
-                        return false;
-                    } else {
-                        if ((peca.getCor() == Cor.VERMELHA) &&
-                                ((pecaAtual.getCor() == Cor.VERMELHA|| pecaAtual.getCor() == Cor.VERMELHA))) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-
-            } catch (Exception e) {
-                return false;
-            }
-
-        } else {
-            while (!((x == -1 || x == 8) || (y == -1 || y == 8))) {
-                x += deltaX;
-                y += deltaY;
-
-                try {
-                    Peca pecaAtual = tabuleiro.getCasa(x, y).getPeca();
-
-                    if (!( pecaAtual == null)) {
-
-                        pecasSeguidasNoCaminho += 1;
-
-                        // VERIFICA SE HÁ ALGUMA PEÇA DO MESMO TIPO NO CAMINHO SE SIM, RETORNA FALSE;
-                        if ((peca.getCor() == Cor.BRANCA) &&
-                                ((pecaAtual.getCor() == Cor.BRANCA) || (pecaAtual.getCor() == Cor.BRANCA))) {
-                            return false;
-                        } else {
-                            if ((peca.getCor() == Cor.VERMELHA) &&
-                                    ((pecaAtual.getCor() == Cor.VERMELHA) || (pecaAtual.getCor() == Cor.VERMELHA))) {
-                                return false;
-                            }
-                        }
-                    } else {
-
-                        if (pecasSeguidasNoCaminho == 1) {
-                            return true;
-                        }
-
-                        if (pecasSeguidasNoCaminho == 2) {
-                            return false;
-                        }
-                    }
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
-
     private boolean deveContinuarJogando(Casa origem) {
         // o jogo testa as 4 direcoes em volta da peca, se tiver uma
         // peca inimiga que de para ser comida, a peca da vez de continuar
@@ -248,7 +166,7 @@ public class Jogo {
                 }
             }
         }
-        return false; // Não achou nenhuma captura extra
+        return false;
     }
 
     private void comerPecas() {
