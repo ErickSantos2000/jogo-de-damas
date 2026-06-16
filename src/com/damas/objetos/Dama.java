@@ -19,4 +19,10 @@ public class Dama extends PecaBase {
     public boolean podeCapturar(int distancia, int capturas) {
         return capturas <= 1;
     }
+
+    // Dentro da classe Dama.java
+    @Override
+    public void promover() {
+        return;
+    }
 }

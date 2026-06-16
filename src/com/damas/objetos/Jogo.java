@@ -126,6 +126,11 @@ public class Jogo {
                 casasComPecaSeguidas = 0;
             }
 
+            if (casasComPecaSeguidas == 2) {
+                if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
+                return false;
+            }
+
         }
 
         if (!peca.podeCapturar(distanciaX, pecasAComer.size())) {
