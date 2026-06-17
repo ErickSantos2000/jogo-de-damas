@@ -64,10 +64,10 @@ public class Jogo {
 
         if (!pecasAComer.isEmpty()) {
             this.comerPecas();
-            if (deveContinuarJogando(destino)) {
+            if (tabuleiro.deveContinuarJogando(destino)) {
                 casaBloqueadaOrigem = destino;
             } else {
-                casaBloqueadaOrigem = null; 
+                casaBloqueadaOrigem = null;
                 this.trocarDeVez();
             }
         } else {
@@ -76,34 +76,8 @@ public class Jogo {
         }
 
         jogadas++;
-        if (podeTransformarParaDama(destino)) {
-            transformarPedraParaDama(destino);
-        }
-    }
+        transformarPedraParaDama(destino);
 
-    private boolean deveContinuarJogando(Casa origem) {
-        int[] direcoes = {-1, 1};
-
-        for (int dx : direcoes) {
-            for (int dy : direcoes) {
-                // Testa um salto padrão de captura (distância 2) nas 4 diagonais
-                int xDestino = origem.getX() + (dx * 2);
-                int yDestino = origem.getY() + (dy * 2);
-
-                if (xDestino >= 0 && xDestino <= 7 && yDestino >= 0 && yDestino <= 7) {
-                    Casa destino = tabuleiro.getCasa(xDestino, yDestino);
-
-                    // Pergunta ao tabuleiro o que tem nesse mini-trajeto de salto
-                    ArrayList<Casa> resultado = tabuleiro.simularMovimentoEValidar(origem, destino);
-
-                    // Se o tabuleiro disser que o salto é possível e contiver exatamente 1 peça inimiga
-                    if (resultado != null && resultado.size() == 1) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private void comerPecas() {
@@ -121,21 +95,9 @@ public class Jogo {
         jogadasSemComerPeca = 0;
     }
 
-    private boolean podeTransformarParaDama(Casa casa) {
-        Peca peca = casa.getPeca();
-
-        // se a casa estiver vazia, não ha o que promover
-        if (peca == null) return false;
-
-        // o jogo apenas compara a posição y atual da peca com a linha que o Enum daquela cor manda
-        return casa.getY() == peca.getCor().getLinhaPromocao();
-    }
-
     private void transformarPedraParaDama(Casa casa) {
         Peca peca = casa.getPeca();
-
         if(peca == null) return;
-
         // instancia a Dama passando a cor exata da pedra que chegou la
         peca.promover(casa);
     }

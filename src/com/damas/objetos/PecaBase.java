@@ -11,8 +11,16 @@ public abstract class PecaBase implements Peca {
 
     @Override
     public void promover(Casa casaAtual){
-        casaAtual.removerPeca();
-        casaAtual.colocarPeca(PecaFactory.createPeca(TipoPeca.DAMA, this.getCor()));
+        Peca peca = casaAtual.getPeca();
+
+        // se a casa estiver vazia, não ha o que promover
+        if (peca == null) return;
+
+        // o jogo apenas compara a posição y atual da peca com a linha que o Enum daquela cor manda
+        if(casaAtual.getY() == peca.getCor().getLinhaPromocao()){
+            casaAtual.removerPeca();
+            casaAtual.colocarPeca(PecaFactory.createPeca(TipoPeca.DAMA, this.getCor()));
+        }
     }
 
     // METODOS QUE EVITAM REPETIÇÃO

@@ -113,4 +113,29 @@ public class Tabuleiro {
 
         return pecasNoCaminho;
     }
+
+    boolean deveContinuarJogando(Casa origem) {
+        int[] direcoes = {-1, 1};
+
+        for (int dx : direcoes) {
+            for (int dy : direcoes) {
+                // Testa um salto padrão de captura (distância 2) nas 4 diagonais
+                int xDestino = origem.getX() + (dx * 2);
+                int yDestino = origem.getY() + (dy * 2);
+
+                if (xDestino >= 0 && xDestino <= 7 && yDestino >= 0 && yDestino <= 7) {
+                    Casa destino = getCasa(xDestino, yDestino);
+
+                    // Pergunta ao tabuleiro o que tem nesse mini-trajeto de salto
+                    ArrayList<Casa> resultado = simularMovimentoEValidar(origem, destino);
+
+                    // Se o tabuleiro disser que o salto é possível e contiver exatamente 1 peça inimiga
+                    if (resultado != null && resultado.size() == 1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
