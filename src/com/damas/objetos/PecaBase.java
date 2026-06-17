@@ -12,7 +12,7 @@ public abstract class PecaBase implements Peca {
     @Override
     public void promover(Casa casaAtual){
         casaAtual.removerPeca();
-        casaAtual.colocarPeca(new Dama(this.getCor()));
+        casaAtual.colocarPeca(PecaFactory.createPeca(TipoPeca.DAMA, this.getCor()));
     }
 
     // METODOS QUE EVITAM REPETIÇÃO
