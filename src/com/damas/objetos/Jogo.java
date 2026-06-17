@@ -27,55 +27,49 @@ public class Jogo {
         tabuleiro.colocarPecas();
     }
 
-    public void moverPeca(int origemX, int origemY, int destinoX, int destinoY) {
-        // casa de origem
+    public void processarJogada(int origemX, int origemY, int destinoX, int destinoY) {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
-
-        // casa de destino
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
-        Peca peca = origem.getPeca(); // pega a peça de origem
+        Peca peca = origem.getPeca();
 
-        // indentifica
-        if (casaBloqueadaOrigem == null) {
-            if (peca.podeMover(vezAtual)) {
+        if (peca == null) return;
 
-                if (peca.isMovimentoValido(destino)) {
+        // se houver um combo em andamento, checa se é a peca certa, se for a certa, continua
+        if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) return;
 
-                    if (simularMovimentoEValidar(origem, destino)) {
+        // vefica a vez e se a movimentação é valida
+        if (peca.podeMover(vezAtual) && peca.isMovimentoValido(destino)) {
+            if (simularMovimentoEValidar(origem, destino)) {
 
-                        peca.mover(destino);
+                // se estiver em um combo, proíbe movimentos simples
+                if (casaBloqueadaOrigem != null && pecasAComer.isEmpty()) return;
 
-                        if (pecasAComer.size() > 0) {
-                            this.comerPecas();
-                            if (deveContinuarJogando(destino)) {
-                                this.casaBloqueadaOrigem = destino;
-                            } else {
-                                trocarDeVez();
-                            }
-                        } else {
-                            jogadasSemComerPeca++;
-                            trocarDeVez();
-                        }
-
-                        jogadas++;
-                        if (this.podeTransformarParaDama(destino)) {
-                            this.transformarPedraParaDama(destino);
-                        }
-                    }
-                }
-            }
-        } else {
-            if ((origem.equals(casaBloqueadaOrigem))) {
-                if(simularMovimentoEValidar(origem, destino)) {
-                    if (pecasAComer.size() != 0) {
-                        casaBloqueadaOrigem = null;
-                        moverPeca(origemX, origemY, destinoX, destinoY);
-                    }
-                }
+                executarMovimento(peca, destino);
             }
         }
     }
 
+    private void executarMovimento(Peca peca, Casa destino) {
+        peca.mover(destino);
+
+        if (!pecasAComer.isEmpty()) {
+            this.comerPecas();
+            if (deveContinuarJogando(destino)) {
+                casaBloqueadaOrigem = destino;
+            } else {
+                casaBloqueadaOrigem = null;
+                this.trocarDeVez();
+            }
+        } else {
+            jogadasSemComerPeca++;
+            this.trocarDeVez();
+        }
+
+        jogadas++;
+        if (podeTransformarParaDama(destino)) {
+            transformarPedraParaDama(destino);
+        }
+    }
 
     private boolean simularMovimentoEValidar(Casa origem, Casa destino) {
         Peca peca = origem.getPeca();
@@ -111,7 +105,7 @@ public class Jogo {
 
                 // VE SE TEM UMA PECA DO MESMO TIPO NO CAMNHO, CASO TENHA, RETORNA FALSE
                 if(peca.getCor() == pecaAlvo.getCor()){
-                     // limpa a lista de capturas pois o movimento falhou
+                    pecasAComer.clear();
                     return false;
                 }
 
@@ -126,7 +120,7 @@ public class Jogo {
             }
 
             if (casasComPecaSeguidas == 2) {
-                if (pecasAComer.size() > 0) pecasAComer.removeAll(pecasAComer);
+                if (pecasAComer.size() > 0) pecasAComer.clear();
                 return false;
             }
 
