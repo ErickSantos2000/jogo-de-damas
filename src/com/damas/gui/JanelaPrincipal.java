@@ -66,15 +66,23 @@ public class JanelaPrincipal extends JFrame {
                 primeiroClique = false;
             }
             else {
-              JOptionPane.showMessageDialog(this, "Clique em uma peça.");
+                JOptionPane.showMessageDialog(this, "Clique em uma peça.");
             }
         }
         else {
             casaClicadaDestino = casaClicada;
             jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
             casaClicadaOrigem.atenuar();
-            primeiroClique = true;
             atualizar();
+
+            if (jogo.getCasaBloqueada() != null) {
+                casaClicadaOrigem = tabuleiroGUI.getCasaGUI(jogo.getCasaBloqueada().getX(), jogo.getCasaBloqueada().getY());
+                casaClicadaOrigem.destacar();
+                primeiroClique = false;
+            } else {
+                primeiroClique = true;
+                casaClicadaOrigem = null;
+            }
         }
         
         if (jogo.getJogadasSemComerPecas() == 20) {

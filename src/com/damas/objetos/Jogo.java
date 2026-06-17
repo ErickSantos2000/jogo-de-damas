@@ -76,6 +76,7 @@ public class Jogo {
         }
     }
 
+
     private boolean simularMovimentoEValidar(Casa origem, Casa destino) {
         Peca peca = origem.getPeca();
         int casasComPecaSeguidas = 0;
@@ -89,14 +90,12 @@ public class Jogo {
         int distanciaX = Math.abs(sentidoX);
         int distanciaY = Math.abs(sentidoY);
 
-        if ((distanciaX == 0) || (distanciaY == 0)) return false;
-
         sentidoX = sentidoX/distanciaX;
         sentidoY = sentidoY/distanciaY;
 
         //PERCORRER AS CASAS E VERIFICAR:
         // 1 - SE HÁ MAIS DE UMA PEÇA SEGUIDA NO CAMINHO (VERDADEIRO RETORNA FALSO)
-        // 2 - SE HÁ UMA PEÇA NO CAMINHO E É DA MESMA COR (VERDADEIRO RETORNA FALSO)
+        // 2 - SE HÁ uma PEÇA NO CAMINHO E É DA MESMA COR (VERDADEIRO RETORNA FALSO)
         int i = origem.getX();
         int j = origem.getY();
 

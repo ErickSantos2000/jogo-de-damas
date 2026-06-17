@@ -39,7 +39,7 @@ public class TabuleiroGUI extends JPanel {
     private Color calcularCor(int x, int y) {
         // linha par
         if (x % 2 == 0) {
-            // coluna �mpar
+            // coluna mpar
             if (y % 2 == 0) {
                 return CasaGUI.COR_ESCURA;
             }
@@ -48,13 +48,13 @@ public class TabuleiroGUI extends JPanel {
                 return CasaGUI.COR_CLARA;
             }
         }
-        // linha �mpar
+        // linha mpar
         else {
             // coluna par
             if (y % 2 == 0) {
                 return CasaGUI.COR_CLARA;
             }
-            // coluna �mpar
+            // coluna mpar
             else {
                 return CasaGUI.COR_ESCURA;
             }
@@ -82,6 +82,10 @@ public class TabuleiroGUI extends JPanel {
                 }
             }
         }
+    }
+
+    public CasaGUI getCasaGUI(int x, int y) {
+        return casas[x][y];
     }
 
     public JanelaPrincipal getJanela() {
