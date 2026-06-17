@@ -14,6 +14,7 @@ public class Tabuleiro {
     public void mover(Casa origem, Casa destino) {
         Peca peca = origem.getPeca();
 
+        origem.removerPeca();
         destino.removerPeca();
         destino.colocarPeca(peca);
     }
@@ -39,12 +40,12 @@ public class Tabuleiro {
             for (int y = 0; y < 3; y++) {
                 if((x % 2 == 0) && (y % 2 == 0)) {
                     Casa casa = getCasa(x, y);
-                    new Pedra(Cor.BRANCA);
+                    casa.colocarPeca(new Pedra(Cor.BRANCA));
                 }
 
                 else if ((x % 2 != 0) && (y % 2 != 0)){
                     Casa casa = getCasa(x, y);
-                    new Pedra(Cor.BRANCA);
+                    casa.colocarPeca(new Pedra(Cor.BRANCA));
                 }
             }
 
@@ -54,11 +55,11 @@ public class Tabuleiro {
             for (int y = 5; y < 8; y++) {
                 if ((x % 2 != 0) && (y % 2 != 0)) {
                     Casa casa = getCasa(x, y);
-                    new Pedra(Cor.VERMELHA);
+                    casa.colocarPeca(new Pedra(Cor.VERMELHA));
                 }
                 else if ((x % 2 == 0) && (y % 2 == 0)) {
                     Casa casa = getCasa(x, y);
-                    new Pedra(Cor.VERMELHA);
+                    casa.colocarPeca(new Pedra(Cor.VERMELHA));
                 }
             }
         }
