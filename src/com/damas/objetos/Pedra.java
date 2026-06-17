@@ -5,8 +5,8 @@ import com.damas.objetos.TipoPeca;
 
 public class Pedra extends PecaBase {
 
-    public Pedra(Casa casa, Cor cor) {
-        super(casa, cor, TipoPeca.PEDRA);
+    public Pedra(Cor cor) {
+        super(cor, TipoPeca.PEDRA);
     }
 
     // faz velidação de movimentação especifica para Pedra, definindo a quantidade de casas percorridas

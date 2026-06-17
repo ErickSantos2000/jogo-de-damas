@@ -1,45 +1,28 @@
 package com.damas.objetos;
 
 public abstract class PecaBase implements Peca {
-    private Casa casa;
     private Cor cor;
     private TipoPeca tipoPeca;
 
-    public PecaBase(Casa casa, Cor cor, TipoPeca tipoPeca) {
-        this.casa = casa;
+    public PecaBase(Cor cor, TipoPeca tipoPeca) {
         this.cor = cor;
         this.tipoPeca = tipoPeca;
-        casa.colocarPeca(this);
     }
 
     @Override
-    public void mover(Casa destino) {
-        casa.removerPeca();
-        destino.colocarPeca(this);
-        casa = destino;
-    }
-
-    @Override
-    public void promover(){
-        Casa casaAtual = this.getCasa();
-
+    public void promover(Casa casaAtual){
         casaAtual.removerPeca();
-
-        new Dama(casaAtual, this.getCor());
+        casaAtual.colocarPeca(new Dama(this.getCor()));
     }
-
-    // metodos especificos para cada classe filha implementar
-    public abstract boolean validarRegrasDeDeslocamento(int sentidoY, int distancia);
-
 
     // METODOS QUE EVITAM REPETIÇÃO
     // como todos as pecas se movem na diagonal, para evitar
     // repetição nas classes concrentas, o corpo é implementado na classe abstrata
     @Override
-    public boolean isMovimentoValido(Casa destino) {
-        int distanciaX = Math.abs((destino.getX() - casa.getX()));
-        int distanciaY = Math.abs((destino.getY() - casa.getY()));
-        int sentidoY = (destino.getY() - casa.getY());
+    public boolean isMovimentoValido(Casa origem, Casa destino) {
+        int distanciaX = Math.abs((destino.getX() - origem.getX()));
+        int distanciaY = Math.abs((destino.getY() - origem.getY()));
+        int sentidoY = (destino.getY() - origem.getY());
 
         // garante que o movimento seja na diagonal e que a peca se mova
         if (distanciaX != distanciaY || distanciaX == 0) return false;
@@ -50,6 +33,10 @@ public abstract class PecaBase implements Peca {
 
         return validarRegrasDeDeslocamento(sentidoY, distanciaX);
     }
+
+    // metodos especificos para cada classe filha implementar
+    public abstract boolean validarRegrasDeDeslocamento(int sentidoY, int distancia);
+
 
     @Override
     public Cor getCor() {
@@ -65,10 +52,6 @@ public abstract class PecaBase implements Peca {
     @Override
     public boolean podeMover(Cor vezAtual) {
         return vezAtual == this.cor;
-    }
-
-    public Casa getCasa() {
-        return casa;
     }
 }
 

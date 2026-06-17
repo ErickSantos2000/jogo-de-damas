@@ -38,19 +38,19 @@ public class Jogo {
         if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) return;
 
         // vefica a vez e se a movimentação é valida
-        if (peca.podeMover(vezAtual) && peca.isMovimentoValido(destino)) {
+        if (peca.podeMover(vezAtual) && peca.isMovimentoValido(origem, destino)) {
             if (simularMovimentoEValidar(origem, destino)) {
 
                 // se estiver em um combo, proíbe movimentos simples
                 if (casaBloqueadaOrigem != null && pecasAComer.isEmpty()) return;
 
-                executarMovimento(peca, destino);
+                executarMovimento(origem, destino);
             }
         }
     }
 
-    private void executarMovimento(Peca peca, Casa destino) {
-        peca.mover(destino);
+    private void executarMovimento(Casa origem, Casa destino) {
+        tabuleiro.mover(origem, destino);
 
         if (!pecasAComer.isEmpty()) {
             this.comerPecas();
@@ -192,12 +192,9 @@ public class Jogo {
         if(peca == null) return;
 
         // instancia a Dama passando a cor exata da pedra que chegou la
-        peca.promover();
+        peca.promover(casa);
     }
 
-    /**
-     * Troca a vez do jogador que pode mover no tabuleiro
-     */
     public void trocarDeVez() {
         if (vezAtual == Cor.BRANCA) {
             vezAtual = Cor.VERMELHA;
