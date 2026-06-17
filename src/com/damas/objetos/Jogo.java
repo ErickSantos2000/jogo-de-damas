@@ -33,18 +33,28 @@ public class Jogo {
         Peca peca = origem.getPeca();
 
         if (peca == null) return;
-
-        // se houver um combo em andamento, checa se é a peca certa, se for a certa, continua
         if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) return;
 
-        // vefica a vez e se a movimentação é valida
+        // 1. Pergunta para a PEÇA se a intenção geométrica base é válida (ex: se pedra anda para trás)
         if (peca.podeMover(vezAtual) && peca.isMovimentoValido(origem, destino)) {
-            if (simularMovimentoEValidar(origem, destino)) {
 
-                // se estiver em um combo, proíbe movimentos simples
-                if (casaBloqueadaOrigem != null && pecasAComer.isEmpty()) return;
+            // 2. Pede para o TABULEIRO calcular o trajeto físico real das casas
+            ArrayList<Casa> pecasInimigas = tabuleiro.simularMovimentoEValidar(origem, destino);
 
-                executarMovimento(origem, destino);
+            // Se o trajeto for geometricamente possível e não nulo
+            if (pecasInimigas != null) {
+
+                // 3. Pergunta para a PEÇA se a quantidade de capturas encontradas confere com o limite dela
+                int distancia = Math.abs(destino.getX() - origem.getX());
+                if (peca.podeCapturar(distancia, pecasInimigas.size())) {
+
+                    // Se estiver em um combo, proíbe movimentos simples (com tamanho 0)
+                    if (casaBloqueadaOrigem != null && pecasInimigas.isEmpty()) return;
+
+                    // Passa a lista limpa para a coleção global e executa
+                    this.pecasAComer = pecasInimigas;
+                    executarMovimento(origem, destino);
+                }
             }
         }
     }
@@ -57,7 +67,7 @@ public class Jogo {
             if (deveContinuarJogando(destino)) {
                 casaBloqueadaOrigem = destino;
             } else {
-                casaBloqueadaOrigem = null;
+                casaBloqueadaOrigem = null; 
                 this.trocarDeVez();
             }
         } else {
@@ -71,89 +81,24 @@ public class Jogo {
         }
     }
 
-    private boolean simularMovimentoEValidar(Casa origem, Casa destino) {
-        Peca peca = origem.getPeca();
-        int casasComPecaSeguidas = 0;
-
-        if (destino.getPeca() != null) return false;
-
-        // SENTIDO DO MOVIMENTO E DISTÂNCIA DO MOVIMENTO
-        int sentidoX = (destino.getX() - origem.getX());
-        int sentidoY = (destino.getY() - origem.getY());
-
-        int distanciaX = Math.abs(sentidoX);
-        int distanciaY = Math.abs(sentidoY);
-
-        sentidoX = sentidoX/distanciaX;
-        sentidoY = sentidoY/distanciaY;
-
-        //PERCORRER AS CASAS E VERIFICAR:
-        // 1 - SE HÁ MAIS DE UMA PEÇA SEGUIDA NO CAMINHO (VERDADEIRO RETORNA FALSO)
-        // 2 - SE HÁ uma PEÇA NO CAMINHO E É DA MESMA COR (VERDADEIRO RETORNA FALSO)
-        int i = origem.getX();
-        int j = origem.getY();
-
-        while (i != destino.getX() && j != destino.getY()) {
-            i += sentidoX;
-            j += sentidoY;
-
-            Casa alvo = tabuleiro.getCasa(i, j);
-            Peca pecaAlvo = alvo.getPeca();
-
-            if (pecaAlvo != null) {
-                casasComPecaSeguidas++;
-
-                // VE SE TEM UMA PECA DO MESMO TIPO NO CAMNHO, CASO TENHA, RETORNA FALSE
-                if(peca.getCor() == pecaAlvo.getCor()){
-                    pecasAComer.clear();
-                    return false;
-                }
-
-            } else {
-
-                // VE SE HÁ PEÇA PARA COMER NO CAMINHO E PASSAR A CASA À COLEÇÃO pecasAComer() PARA DEPOIS COME-LAS
-                if (casasComPecaSeguidas == 1) {
-                    Casa casa = tabuleiro.getCasa((alvo.getX() - sentidoX), (alvo.getY() - sentidoY));
-                    pecasAComer.add(casa);
-                }
-                casasComPecaSeguidas = 0;
-            }
-
-            if (casasComPecaSeguidas == 2) {
-                if (pecasAComer.size() > 0) pecasAComer.clear();
-                return false;
-            }
-
-        }
-
-        if (!peca.podeCapturar(distanciaX, pecasAComer.size())) {
-            pecasAComer.clear();
-            return false;
-        }
-        return true;
-    }
-
     private boolean deveContinuarJogando(Casa origem) {
-        // o jogo testa as 4 direcoes em volta da peca, se tiver uma
-        // peca inimiga que de para ser comida, a peca da vez de continuar
         int[] direcoes = {-1, 1};
 
         for (int dx : direcoes) {
             for (int dy : direcoes) {
-                // testa um salto de 2 casas
+                // Testa um salto padrão de captura (distância 2) nas 4 diagonais
                 int xDestino = origem.getX() + (dx * 2);
                 int yDestino = origem.getY() + (dy * 2);
 
-                // verifica os limites do tabuleiro
                 if (xDestino >= 0 && xDestino <= 7 && yDestino >= 0 && yDestino <= 7) {
                     Casa destino = tabuleiro.getCasa(xDestino, yDestino);
 
-                    // simula movimento para saber se deve continuar
-                    if (simularMovimentoEValidar(origem, destino)) {
-                        if (pecasAComer.size() > 0) {
-                            pecasAComer.clear();
-                            return true;
-                        }
+                    // Pergunta ao tabuleiro o que tem nesse mini-trajeto de salto
+                    ArrayList<Casa> resultado = tabuleiro.simularMovimentoEValidar(origem, destino);
+
+                    // Se o tabuleiro disser que o salto é possível e contiver exatamente 1 peça inimiga
+                    if (resultado != null && resultado.size() == 1) {
+                        return true;
                     }
                 }
             }

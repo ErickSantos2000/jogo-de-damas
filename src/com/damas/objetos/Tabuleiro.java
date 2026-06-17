@@ -1,10 +1,12 @@
 package com.damas.objetos;
 
+import java.util.ArrayList;
+
 public class Tabuleiro {
-    
+
     public static final int MAX_LINHAS = 8;
     public static final int MAX_COLUNAS = 8;
- 
+
     private Casa[][] casas;
 
     public Tabuleiro() {
@@ -63,5 +65,52 @@ public class Tabuleiro {
                 }
             }
         }
+    }
+
+    ArrayList<Casa> simularMovimentoEValidar(Casa origem, Casa destino) {
+        if (destino.getPeca() != null) return null;
+
+        int sentidoX = (destino.getX() - origem.getX());
+        int sentidoY = (destino.getY() - origem.getY());
+        int distanciaX = Math.abs(sentidoX);
+        int distanciaY = Math.abs(sentidoY);
+
+        if (distanciaX == 0) return null;
+
+        sentidoX = sentidoX / distanciaX;
+        sentidoY = sentidoY / distanciaY;
+
+        ArrayList<Casa> pecasNoCaminho = new ArrayList<>();
+        int pecasSeguidas = 0;
+
+        int i = origem.getX();
+        int j = origem.getY();
+
+        // Varre a diagonal entre a origem e o destino
+        while (i != destino.getX() && j != destino.getY()) {
+            i += sentidoX;
+            j += sentidoY;
+
+            Casa alvo = getCasa(i, j);
+            Peca pecaAlvo = alvo.getPeca();
+
+            if (pecaAlvo != null) {
+                pecasSeguidas++;
+                // Se encontrar uma peça da mesma cor no caminho, o movimento é inválido
+                if (origem.getPeca().getCor() == pecaAlvo.getCor()) {
+                    return null;
+                }
+                pecasNoCaminho.add(alvo);
+            } else {
+                pecasSeguidas = 0; // Reseta se encontrar uma casa vazia
+            }
+
+            // Regra universal do jogo de damas: nunca se pula duas peças juntas
+            if (pecasSeguidas == 2) {
+                return null;
+            }
+        }
+
+        return pecasNoCaminho;
     }
 }
