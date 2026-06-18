@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import com.damas.objetos.Jogo;
 import com.damas.objetos.Tabuleiro;
 
-public class JanelaPrincipal extends JFrame implements JogoOuvinte, ViewService {
+public class JanelaPrincipal extends JFrame implements JogoOuvinte {
 
     private Jogo jogo;
     // define variaveis de estado de clique na tela
@@ -71,18 +71,8 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte, ViewService 
 
     @Override
     public void aoVencer(String player) {
-        showMessage("FIM DE JOGO! \n" + player + " VENCEU!");
+        System.out.println("FIM DE JOGO! \n" + player + " VENCEU!");
         this.criarNovoJogo();
-    }
-
-    @Override
-    public void showMessage(String msg) {
-
-    }
-
-    @Override
-    public boolean confirmAction(String msg) {
-        return false;
     }
 
     // este metodo decide o que fazer quando vc clica no Tabuleiro
@@ -91,12 +81,6 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte, ViewService 
         controller.lidaComSelecao(casaClicada.getPosicaoX(), casaClicada.getPosicaoY());
     }
 
-
-
-
-    /**
-     * Cria um novo jogo e atualiza o tabuleiro gráfico.
-     */
     private void criarNovoJogo() {
         jogo = new Jogo();
 
