@@ -22,7 +22,7 @@ public class JogoController {
                 casaOrigem = casaClicada;
                 casaOrigem.destacar();
             } else {
-                view.showMessage("Clique em uma peça valida.");
+                System.out.println("Clique em uma peça valida.");
             }
         } else {
             // executa a jogada no jogo
