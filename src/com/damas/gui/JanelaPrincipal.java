@@ -11,9 +11,6 @@ import com.damas.objetos.Tabuleiro;
 public class JanelaPrincipal extends JFrame implements JogoOuvinte {
 
     private Jogo jogo;
-    // define variaveis de estado de clique na tela
-    // como jogo de damas precisa de dois cliques
-    // é usado um boolean para saber se o clique é a origem ou destino
     private JogoController controller;
     private TabuleiroGUI tabuleiroGUI;
 
@@ -38,13 +35,6 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
             }
         });
 
-        // configura action listener para o menu status
-        menuStatus.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, jogo.toString());
-            }
-        });
 
         // configura action listener para o menu sair
         menuSair.addActionListener(new ActionListener() {
@@ -77,8 +67,7 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
 
     // este metodo decide o que fazer quando vc clica no Tabuleiro
     public void reagir(CasaGUI casaClicada) {
-        // A janela apenas informa as coordenadas. O "o que fazer" é do Controller.
-        controller.lidaComSelecao(casaClicada.getPosicaoX(), casaClicada.getPosicaoY());
+        controller.lidaComCliques(casaClicada.getPosicaoX(), casaClicada.getPosicaoY());
     }
 
     private void criarNovoJogo() {

@@ -23,7 +23,6 @@ public abstract class PecaBase implements Peca {
         }
     }
 
-    // METODOS QUE EVITAM REPETIÇÃO
     // como todos as pecas se movem na diagonal, para evitar
     // repetição nas classes concrentas, o corpo é implementado na classe abstrata
     @Override

@@ -4,7 +4,6 @@ import com.damas.objetos.Jogo;
 
 public class JogoController {
     private Jogo jogo;
-    private boolean primeiroClique;
     private JanelaPrincipal view;
     private CasaGUI casaOrigem;
 
@@ -14,7 +13,7 @@ public class JogoController {
     }
 
     // reponsavel por gerenciar o estado
-    public void lidaComSelecao(int x, int y) {
+    public void lidaComCliques(int x, int y) {
         // pega a peca clicada atraves da view
         CasaGUI casaClicada = view.getTabuleiroGUI().getCasaGUI(x, y);
         if (casaOrigem == null) {
@@ -42,10 +41,7 @@ public class JogoController {
             } else {
                 casaOrigem.atenuar();
                 casaOrigem = null; // libera a origem para o proxima clique
-
             }
-
-
         }
     }
 }

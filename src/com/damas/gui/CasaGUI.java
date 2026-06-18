@@ -30,9 +30,6 @@ public class CasaGUI extends JButton {
     private static final Icon DAMA_VERMELHA = new ImageIcon(DAMA_VERMELHA_URL);
 
     // Cores das pecas
-    public static final int SEM_PECA = -1;
-    public static final int PECA_BRANCA = 0;
-    public static final int PECA_VERMELHA = 1;
 
     private int x;
     private int y;
@@ -57,7 +54,6 @@ public class CasaGUI extends JButton {
             }
         });
     }
-
     public int getPosicaoX() {
         return this.x;
     }
@@ -89,20 +85,7 @@ public class CasaGUI extends JButton {
     public boolean possuiPeca() {
         return getIcon() != null;
     }
-    
-    public int getCorPeca() {
-        Icon icone = getIcon();
-        
-        if (icone == PEDRA_BRANCA || icone == DAMA_BRANCA) {
-            return PECA_BRANCA;
-        }
-        else if (icone == PEDRA_VERMELHA || icone == DAMA_VERMELHA) {
-             return PECA_VERMELHA;
-        }
-        else {
-            return SEM_PECA;
-        }
-    }
+
     
     public void destacar() {
         setBackground(COR_DESTAQUE);
