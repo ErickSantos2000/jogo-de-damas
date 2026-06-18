@@ -6,46 +6,51 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.damas.objetos.Jogo;
+import com.damas.objetos.Tabuleiro;
 
-public class JanelaPrincipal extends JFrame {
+public class JanelaPrincipal extends JFrame implements JogoOuvinte, ViewService {
 
     private Jogo jogo;
-    private boolean primeiroClique;
-    private CasaGUI casaClicadaOrigem;
-    private CasaGUI casaClicadaDestino;
+    // define variaveis de estado de clique na tela
+    // como jogo de damas precisa de dois cliques
+    // é usado um boolean para saber se o clique é a origem ou destino
+    private JogoController controller;
+    private TabuleiroGUI tabuleiroGUI;
 
     public JanelaPrincipal() {
-
+        // chama initComponents() para montar visual
         initComponents();
-        this.primeiroClique = true;
-        this.casaClicadaOrigem = null;
-        this.casaClicadaDestino = null;
-        criarNovoJogo();
+        criarNovoJogo(); // reseta o estado e instancia um novo jogo
 
+        // atribui comportamentos aos botões do menu superior da janela
         // configura action listener para o menu novo
         menuNovo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 criarNovoJogo();
             }
         });
-        
+
         // configura action listener para o menu status
         menuStatus.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {JOptionPane.showMessageDialog(null, jogo.toString());}
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, jogo.toString());
+            }
         });
 
         // configura action listener para o menu status
         menuStatus.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {JOptionPane.showMessageDialog(null, jogo.toString());}
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, jogo.toString());
+            }
         });
 
         // configura action listener para o menu sair
         menuSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                dispose();// fecha apenas esta janela e libera a memoria do sistema
             }
         });
 
@@ -53,67 +58,60 @@ public class JanelaPrincipal extends JFrame {
         super.setVisible(true);
         super.pack();
     }
-    
-    /**
-     * Responde aos cliques realizados no tabuleiro. 
-     * @param casaClicada Casa que o jogador clicou.
-     */
-    public void reagir(CasaGUI casaClicada) {
-        if (primeiroClique) {
-            if (casaClicada.possuiPeca()) {
-                casaClicadaOrigem = casaClicada;
-                casaClicadaOrigem.destacar();
-                primeiroClique = false;
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Clique em uma peça.");
-            }
-        }
-        else {
-            casaClicadaDestino = casaClicada;
-            jogo.processarJogada(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-            casaClicadaOrigem.atenuar();
-            atualizar();
 
-            if (jogo.getCasaBloqueada() != null) {
-                casaClicadaOrigem = tabuleiroGUI.getCasaGUI(jogo.getCasaBloqueada().getX(), jogo.getCasaBloqueada().getY());
-                casaClicadaOrigem.destacar();
-                primeiroClique = false;
-            } else {
-                primeiroClique = true;
-                casaClicadaOrigem = null;
-            }
-        }
-        
-        if (jogo.getJogadasSemComerPecas() == 20) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + "20 Jogadas sem comer nenhuma peça!");
-            criarNovoJogo();
-        }
-
-        if (jogo.getGanhador()==1) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + jogo.getJogadorUm().getNome() + " VENCEU!");
-            criarNovoJogo();
-        }
-        else if (jogo.getGanhador()==2) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + jogo.getJogadorDois().getNome() + " VENCEU!");
-            criarNovoJogo();
-        }
+    @Override
+    public void aoMover(Tabuleiro t) {
+        this.atualizar();
     }
+
+    @Override
+    public void aoMovimentoInvalido(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    @Override
+    public void aoVencer(String player) {
+        showMessage("FIM DE JOGO! \n" + player + " VENCEU!");
+        this.criarNovoJogo();
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
+    }
+
+    @Override
+    public boolean confirmAction(String msg) {
+        return false;
+    }
+
+    // este metodo decide o que fazer quando vc clica no Tabuleiro
+    public void reagir(CasaGUI casaClicada) {
+        // A janela apenas informa as coordenadas. O "o que fazer" é do Controller.
+        controller.lidaComSelecao(casaClicada.getPosicaoX(), casaClicada.getPosicaoY());
+    }
+
+
+
 
     /**
      * Cria um novo jogo e atualiza o tabuleiro gráfico.
      */
     private void criarNovoJogo() {
-        if(!primeiroClique) {
-            primeiroClique = true;
-            casaClicadaOrigem.atenuar();
-        }               
         jogo = new Jogo();
+
+        // instancia o controlador ligando o Jogo com a Janela
+        controller = new JogoController(jogo, this);
+        jogo.addOuvinte(this);
         atualizar();
     }
 
     private void atualizar() {
         tabuleiroGUI.atualizar(jogo);
+    }
+
+    public TabuleiroGUI getTabuleiroGUI() {
+        return tabuleiroGUI;
     }
 
     private void initComponents() {
@@ -237,7 +235,7 @@ public class JanelaPrincipal extends JFrame {
         menuNovo.setText("Novo");
         menuArquivo.add(menuNovo);
         menuArquivo.add(jSeparator1);
-        
+
         menuStatus.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         menuStatus.setText("Status");
         menuArquivo.add(menuStatus);
@@ -309,5 +307,4 @@ public class JanelaPrincipal extends JFrame {
     private javax.swing.JMenuItem menuStatus;
     private javax.swing.JPanel pnlColunas;
     private javax.swing.JPanel pnlLinhas;
-    private TabuleiroGUI tabuleiroGUI;
 }

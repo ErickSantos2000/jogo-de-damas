@@ -1,5 +1,8 @@
 package com.damas.objetos;
 
+import com.damas.gui.JanelaPrincipal;
+import com.damas.gui.JogoOuvinte;
+
 import java.util.ArrayList;
 
 public class Jogo {
@@ -13,11 +16,14 @@ public class Jogo {
     private ArrayList<Casa> pecasAComer;
     private Casa casaBloqueadaOrigem;
 
+    private ArrayList<JogoOuvinte> jogoOuvintes;
+
     public Jogo() {
         tabuleiro = new Tabuleiro();
         pecasAComer = new ArrayList<Casa>();
         jogadorUm = new Jogador("player branco");
         jogadorDois = new Jogador("player vermelho");
+        jogoOuvintes = new ArrayList<>();
 
         vezAtual = Cor.BRANCA;
         jogadas = 0;
@@ -27,13 +33,23 @@ public class Jogo {
         tabuleiro.colocarPecas();
     }
 
+    public void addOuvinte(JogoOuvinte jogoOuvinte){
+        jogoOuvintes.add(jogoOuvinte);
+    }
+
     public void processarJogada(int origemX, int origemY, int destinoX, int destinoY) {
         Casa origem = tabuleiro.getCasa(origemX, origemY);
         Casa destino = tabuleiro.getCasa(destinoX, destinoY);
         Peca peca = origem.getPeca();
 
         if (peca == null) return;
-        if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) return;
+        if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) {
+            // dentro de processarJogada, se uma validação falhar:
+            for (JogoOuvinte ouvinte : jogoOuvintes) {
+                ouvinte.aoMovimentoInvalido("Mensagem de erro aqui");
+            }
+            return;
+        }
 
         // 1. Pergunta para a PEÇA se a intenção geométrica base é válida (ex: se pedra anda para trás)
         if (peca.podeMover(vezAtual) && peca.isMovimentoValido(origem, destino)) {
@@ -49,7 +65,13 @@ public class Jogo {
                 if (peca.podeCapturar(distancia, pecasInimigas.size())) {
 
                     // Se estiver em um combo, proíbe movimentos simples (com tamanho 0)
-                    if (casaBloqueadaOrigem != null && pecasInimigas.isEmpty()) return;
+                    if (casaBloqueadaOrigem != null && pecasInimigas.isEmpty()){
+                        // dentro de processarJogada, se uma validação falhar:
+                        for (JogoOuvinte ouvinte : jogoOuvintes) {
+                            ouvinte.aoMovimentoInvalido("Mensagem de erro aqui");
+                        }
+                        return;
+                    }
 
                     // Passa a lista limpa para a coleção global e executa
                     this.pecasAComer = pecasInimigas;
@@ -78,6 +100,17 @@ public class Jogo {
         jogadas++;
         transformarPedraParaDama(destino);
 
+        // no final do movimento, avise a todos os interessados
+        for (JogoOuvinte ouvinte : jogoOuvintes) {
+            ouvinte.aoMover(this.tabuleiro);
+        }
+
+        if (getGanhador() != 0) {
+            String vencedor = (getGanhador() == 1) ? jogadorUm.getNome() : jogadorDois.getNome();
+            for (JogoOuvinte ouvinte : jogoOuvintes) {
+                ouvinte.aoVencer(vencedor);
+            }
+        }
     }
 
     private void comerPecas() {
