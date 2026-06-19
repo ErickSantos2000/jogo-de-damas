@@ -16,14 +16,16 @@ public class Jogo {
     private ArrayList<Casa> pecasAComer;
     private Casa casaBloqueadaOrigem;
 
-    private ArrayList<JogoOuvinte> jogoOuvintes;
+    private JogoOuvinte jogoOuvinte;
 
     public Jogo() {
         tabuleiro = new Tabuleiro();
         pecasAComer = new ArrayList<Casa>();
         jogadorUm = new Jogador("player branco");
         jogadorDois = new Jogador("player vermelho");
-        jogoOuvintes = new ArrayList<>();
+
+        // AJUSTE: Inicializa como null para evitar que o construtor crie outra janela e trave em loop infinito
+        jogoOuvinte = null;
 
         vezAtual = Cor.BRANCA;
         jogadas = 0;
@@ -33,8 +35,9 @@ public class Jogo {
         tabuleiro.colocarPecas();
     }
 
-    public void addOuvinte(JogoOuvinte jogoOuvinte){
-        jogoOuvintes.add(jogoOuvinte);
+
+    public void setJogoOuvinte(JogoOuvinte ouvinte) {
+        this.jogoOuvinte = ouvinte;
     }
 
     public void processarJogada(int origemX, int origemY, int destinoX, int destinoY) {
@@ -44,10 +47,8 @@ public class Jogo {
 
         if (peca == null) return;
         if (casaBloqueadaOrigem != null && !origem.equals(casaBloqueadaOrigem)) {
-            // dentro de processarJogada, se uma validação falhar:
-            for (JogoOuvinte ouvinte : jogoOuvintes) {
-                ouvinte.aoMovimentoInvalido("Mensagem de erro aqui");
-            }
+            // dentro de processarJogada, se uma validação falhar
+            jogoOuvinte.aoMovimentoInvalido("Mensagem de erro aqui");
             return;
         }
 
@@ -65,9 +66,7 @@ public class Jogo {
                     // Se estiver em um combo, proíbe movimentos simples (com tamanho 0)
                     if (casaBloqueadaOrigem != null && pecasInimigas.isEmpty()){
                         // dentro de processarJogada, se uma validação falhar
-                        for (JogoOuvinte ouvinte : jogoOuvintes) {
-                            ouvinte.aoMovimentoInvalido("Mensagem de erro aqui");
-                        }
+                        jogoOuvinte.aoMovimentoInvalido("Mensagem de erro aqui");
                         return;
                     }
 
@@ -99,15 +98,11 @@ public class Jogo {
         transformarPedraParaDama(destino);
 
         // no final do movimento, avise a todos os interessados
-        for (JogoOuvinte ouvinte : jogoOuvintes) {
-            ouvinte.aoMover(this.tabuleiro);
-        }
+        jogoOuvinte.aoMover(this.tabuleiro);
 
         if (getGanhador() != 0) {
             String vencedor = (getGanhador() == 1) ? jogadorUm.getNome() : jogadorDois.getNome();
-            for (JogoOuvinte ouvinte : jogoOuvintes) {
-                ouvinte.aoVencer(vencedor);
-            }
+            jogoOuvinte.aoVencer(vencedor);
         }
     }
 

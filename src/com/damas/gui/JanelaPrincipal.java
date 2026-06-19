@@ -17,7 +17,6 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
     public JanelaPrincipal() {
         // chama initComponents() para montar visual
         initComponents();
-        criarNovoJogo(); // reseta o estado e instancia um novo jogo
 
         // atribui comportamentos aos botões do menu superior da janela
         // configura action listener para o menu novo
@@ -47,6 +46,10 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
         super.setLocationRelativeTo(null);
         super.setVisible(true);
         super.pack();
+
+        // AJUSTE: Chamar a criação do jogo DEPOIS que a janela já está visível na tela
+        // Isso evita que o Swing trave tentando desenhar componentes ocultos.
+        criarNovoJogo();
     }
 
     @Override
@@ -75,7 +78,10 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
 
         // instancia o controlador ligando o Jogo com a Janela
         controller = new JogoController(jogo, this);
-        jogo.addOuvinte(this);
+
+        // AJUSTE: Vincula a janela atual (this) diretamente na variável simples do jogo criado
+        jogo.setJogoOuvinte(this);
+
         atualizar();
     }
 
@@ -214,11 +220,6 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
         menuArquivo.add(menuStatus);
         menuArquivo.add(jSeparator2);
 
-        menuStatus.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        menuStatus.setText("Status");
-        menuArquivo.add(menuStatus);
-        menuArquivo.add(jSeparator2);
-
         menuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuSair.setText("Sair");
         menuArquivo.add(menuSair);
@@ -230,26 +231,26 @@ public class JanelaPrincipal extends JFrame implements JogoOuvinte {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlColunas, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
-                    .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(pnlColunas, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                                        .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pack();
