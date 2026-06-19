@@ -51,22 +51,20 @@ public class Jogo {
             return;
         }
 
-        // 1. Pergunta para a PEÇA se a intenção geométrica base é válida (ex: se pedra anda para trás)
         if (peca.podeMover(vezAtual) && peca.isMovimentoValido(origem, destino)) {
 
-            // 2. Pede para o TABULEIRO calcular o trajeto físico real das casas
             ArrayList<Casa> pecasInimigas = tabuleiro.simularMovimentoEValidar(origem, destino);
 
-            // Se o trajeto for geometricamente possível e não nulo
+            // se o trajeto for geometricamente possível e não nulo
             if (pecasInimigas != null) {
 
-                // 3. Pergunta para a PEÇA se a quantidade de capturas encontradas confere com o limite dela
+                // pergunta para a peca se a quantidade de capturas encontradas confere com o limite dela
                 int distancia = Math.abs(destino.getX() - origem.getX());
                 if (peca.podeCapturar(distancia, pecasInimigas.size())) {
 
                     // Se estiver em um combo, proíbe movimentos simples (com tamanho 0)
                     if (casaBloqueadaOrigem != null && pecasInimigas.isEmpty()){
-                        // dentro de processarJogada, se uma validação falhar:
+                        // dentro de processarJogada, se uma validação falhar
                         for (JogoOuvinte ouvinte : jogoOuvintes) {
                             ouvinte.aoMovimentoInvalido("Mensagem de erro aqui");
                         }

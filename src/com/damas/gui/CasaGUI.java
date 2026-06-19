@@ -1,5 +1,9 @@
 package com.damas.gui;
 
+import com.damas.objetos.Cor;
+import com.damas.objetos.Peca;
+import com.damas.objetos.TipoPeca;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -100,6 +104,27 @@ public class CasaGUI extends JButton {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
+    }
+
+    public void atualizarPeca(Peca peca) {
+        if (peca == null) {
+            setIcon(null); // Remove a peça se a casa estiver vazia
+            return;
+        }
+
+        if (peca.getTipo() == TipoPeca.PEDRA) {
+            if (peca.getCor() == Cor.BRANCA) {
+                setIcon(PEDRA_BRANCA);
+            } else {
+                setIcon(PEDRA_VERMELHA);
+            }
+        } else if (peca.getTipo() == TipoPeca.DAMA) {
+            if (peca.getCor() == Cor.BRANCA) {
+                setIcon(DAMA_BRANCA);
+            } else {
+                setIcon(DAMA_VERMELHA);
+            }
+        }
     }
 
 }

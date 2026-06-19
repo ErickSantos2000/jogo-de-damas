@@ -71,15 +71,7 @@ public class TabuleiroGUI extends JPanel {
 
                 Tabuleiro tabuleiro = jogo.getTabuleiro();
                 Casa casa = tabuleiro.getCasa(x, y);
-                if (casa.possuiPeca()) {
-                    Peca peca = casa.getPeca();
-
-                    PecaGUI visual = new PecaGUI(peca);
-                    visual.desenhar(casaGUI);
-                }
-                else {
-                    casaGUI.apagarPeca();
-                }
+                casaGUI.atualizarPeca(casa.getPeca());
             }
         }
     }
@@ -95,4 +87,6 @@ public class TabuleiroGUI extends JPanel {
     private void initComponents() {
         setLayout(new java.awt.GridLayout(8, 8));
     }
+
+
 }
