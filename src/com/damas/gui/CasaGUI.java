@@ -1,5 +1,9 @@
 package com.damas.gui;
 
+import com.damas.objetos.Cor;
+import com.damas.objetos.Peca;
+import com.damas.objetos.TipoPeca;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -11,13 +15,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-/**
- * Interface Grafica de uma Casa no tabuleiro do jogo.
- *
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
- * @author João Victor da S. Cirilo {@link joao.cirilo@academico.ufpb.br}
- */
 public class CasaGUI extends JButton {
 
     // Constantes 
@@ -37,9 +34,6 @@ public class CasaGUI extends JButton {
     private static final Icon DAMA_VERMELHA = new ImageIcon(DAMA_VERMELHA_URL);
 
     // Cores das pecas
-    public static final int SEM_PECA = -1;
-    public static final int PECA_BRANCA = 0;
-    public static final int PECA_VERMELHA = 1;
 
     private int x;
     private int y;
@@ -64,7 +58,6 @@ public class CasaGUI extends JButton {
             }
         });
     }
-
     public int getPosicaoX() {
         return this.x;
     }
@@ -96,20 +89,7 @@ public class CasaGUI extends JButton {
     public boolean possuiPeca() {
         return getIcon() != null;
     }
-    
-    public int getCorPeca() {
-        Icon icone = getIcon();
-        
-        if (icone == PEDRA_BRANCA || icone == DAMA_BRANCA) {
-            return PECA_BRANCA;
-        }
-        else if (icone == PEDRA_VERMELHA || icone == DAMA_VERMELHA) {
-             return PECA_VERMELHA;
-        }
-        else {
-            return SEM_PECA;
-        }
-    }
+
     
     public void destacar() {
         setBackground(COR_DESTAQUE);
@@ -119,14 +99,32 @@ public class CasaGUI extends JButton {
         setBackground(cor);
     }
 
-    /**
-     * Pinta o componente com a cor de fundo, aceita valores RGBA
-     */
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
+    }
+
+    public void atualizarPeca(Peca peca) {
+        if (peca == null) {
+            setIcon(null); // Remove a peça se a casa estiver vazia
+            return;
+        }
+
+        if (peca.getTipo() == TipoPeca.PEDRA) {
+            if (peca.getCor() == Cor.BRANCA) {
+                setIcon(PEDRA_BRANCA);
+            } else {
+                setIcon(PEDRA_VERMELHA);
+            }
+        } else if (peca.getTipo() == TipoPeca.DAMA) {
+            if (peca.getCor() == Cor.BRANCA) {
+                setIcon(DAMA_BRANCA);
+            } else {
+                setIcon(DAMA_VERMELHA);
+            }
+        }
     }
 
 }

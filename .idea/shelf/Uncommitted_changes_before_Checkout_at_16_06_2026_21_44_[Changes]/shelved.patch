@@ -1,0 +1,28 @@
+Index: src/com/damas/gui/TabuleiroGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.damas.gui;\n\nimport java.awt.Color;\nimport javax.swing.JPanel;\n\nimport com.damas.objetos.Casa;\nimport com.damas.objetos.Dama;\nimport com.damas.objetos.Jogo;\nimport com.damas.objetos.Pedra;\nimport com.damas.objetos.Tabuleiro;\n\n/**\n * Interface Grafica do Tabuleiro do jogo.\n * \n * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;\n * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;\n */\npublic class TabuleiroGUI extends JPanel {\n\n    private JanelaPrincipal janela;\n    private CasaGUI[][] casas;\n\n    public TabuleiroGUI() {\n    }\n\n    public TabuleiroGUI(JanelaPrincipal janela) {\n        this.janela = janela;\n        initComponents();\n        criarCasas();\n    }\n\n    /**\n     * Preenche o tabuleiro com 64 casas\n     */\n    private void criarCasas() {\n        casas = new CasaGUI[8][8];\n        // De cima para baixo\n        for (int y = 7; y >= 0; y--) {\n            // Da esquerda para a direita\n            for (int x = 0; x < 8; x++) {\n                Color cor = calcularCor(x, y);\n                CasaGUI casa = new CasaGUI(x, y, cor, this);\n                casas[x][y] = casa;\n                add(casa);\n            }\n        }\n    }\n\n    private Color calcularCor(int x, int y) {\n        // linha par\n        if (x % 2 == 0) {\n            // coluna �mpar\n            if (y % 2 == 0) {\n                return CasaGUI.COR_ESCURA;\n            }\n            // coluna impar\n            else {\n                return CasaGUI.COR_CLARA;\n            }\n        }\n        // linha �mpar\n        else {\n            // coluna par\n            if (y % 2 == 0) {\n                return CasaGUI.COR_CLARA;\n            }\n            // coluna �mpar\n            else {\n                return CasaGUI.COR_ESCURA;\n            }\n        }\n\n        // codigo acima em uma linha\n        // return (i%2 + j%2)%2 == 0 ? CasaGUI.COR_ESCURA : CasaGUI.COR_CLARA;\n    }\n\n    public void atualizar(Jogo jogo) {\n        for (int x = 0; x < 8; x++) {\n            for (int y = 0; y < 8; y++) {\n                CasaGUI casaGUI = casas[x][y];\n                \n                Tabuleiro tabuleiro = jogo.getTabuleiro();\n                Casa casa = tabuleiro.getCasa(x, y);\n                if (casa.possuiPeca()) {\n                    Pedra peca = casa.getPeca();\n\n                    switch (peca.getTipo()) {\n                        case Pedra.PEDRA_BRANCA:\n                            casaGUI.desenharPedraBranca();\n                            break;\n                        case Dama.DAMA_BRANCA:\n                            casaGUI.desenharDamaBranca();\n                            break;\n                        case Pedra.PEDRA_VERMELHA:\n                            casaGUI.desenharPedraVermelha();\n                            break;\n                        case Dama.DAMA_VERMELHA:\n                            casaGUI.desenharDamaVermelha();\n                            break;\n                    }\n                }\n                else {\n                    casaGUI.apagarPeca();\n                }\n            }\n        }\n    }\n\n    public JanelaPrincipal getJanela() {\n        return janela;\n    }\n\n    private void initComponents() {\n        setLayout(new java.awt.GridLayout(8, 8));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/damas/gui/TabuleiroGUI.java b/src/com/damas/gui/TabuleiroGUI.java
+--- a/src/com/damas/gui/TabuleiroGUI.java	(revision 16c5e643136f9e93eade8a30eb75a5bdf00fabb6)
++++ b/src/com/damas/gui/TabuleiroGUI.java	(date 1781657038455)
+@@ -106,6 +106,10 @@
+         }
+     }
+ 
++    public CasaGUI getCasaGUI(int x, int y) {
++        return casas[x][y];
++    }
++
+     public JanelaPrincipal getJanela() {
+         return janela;
+     }
+@@ -113,4 +117,6 @@
+     private void initComponents() {
+         setLayout(new java.awt.GridLayout(8, 8));
+     }
++
++
+ }

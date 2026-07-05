@@ -1,9 +1,5 @@
 package com.damas.objetos;
 
-/**
- * Jogador, recebe um nome e armazena os pontos
- * @author João Victor da S. Cirilo {@link joao.cirilo@academico.ufpb.br}
- */
 public class Jogador {
     public static final String DEFAULT_NAME = "Anônimo";
     

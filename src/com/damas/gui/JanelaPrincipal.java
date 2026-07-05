@@ -6,114 +6,91 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.damas.objetos.Jogo;
+import com.damas.objetos.Tabuleiro;
 
-/**
- * Tela do jogo.
- * Responsável por reagir aos cliques feitos pelo jogador. 
- * @author Alan Moraes &lt;alan@ci.ufpb.br&gt;
- * @author Leonardo Villeth &lt;lvilleth@cc.ci.ufpb.br&gt;
- * @author Arthur Miranda Tavares {@link arthur.miranda@academico.ufpb.br}
- */
-
-public class JanelaPrincipal extends JFrame {
+public class JanelaPrincipal extends JFrame implements JogoOuvinte {
 
     private Jogo jogo;
-    private boolean primeiroClique;
-    private CasaGUI casaClicadaOrigem;
-    private CasaGUI casaClicadaDestino;
+    private JogoController controller;
+    private TabuleiroGUI tabuleiroGUI;
 
     public JanelaPrincipal() {
-
+        // chama initComponents() para montar visual
         initComponents();
-        this.primeiroClique = true;
-        this.casaClicadaOrigem = null;
-        this.casaClicadaDestino = null;
-        criarNovoJogo();
 
+        // atribui comportamentos aos botões do menu superior da janela
         // configura action listener para o menu novo
         menuNovo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 criarNovoJogo();
             }
         });
-        
-        // configura action listener para o menu status
-        menuStatus.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {JOptionPane.showMessageDialog(null, jogo.toString());}
-        });
 
         // configura action listener para o menu status
         menuStatus.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {JOptionPane.showMessageDialog(null, jogo.toString());}
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, jogo.toString());
+            }
         });
+
 
         // configura action listener para o menu sair
         menuSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                dispose();// fecha apenas esta janela e libera a memoria do sistema
             }
         });
 
         super.setLocationRelativeTo(null);
         super.setVisible(true);
         super.pack();
+
+        // AJUSTE: Chamar a criação do jogo DEPOIS que a janela já está visível na tela
+        // Isso evita que o Swing trave tentando desenhar componentes ocultos.
+        criarNovoJogo();
     }
-    
-    /**
-     * Responde aos cliques realizados no tabuleiro. 
-     * @param casaClicada Casa que o jogador clicou.
-     */
+
+    @Override
+    public void aoMover(Tabuleiro t) {
+        this.atualizar();
+    }
+
+    @Override
+    public void aoMovimentoInvalido(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    @Override
+    public void aoVencer(String player) {
+        System.out.println("FIM DE JOGO! \n" + player + " VENCEU!");
+        this.criarNovoJogo();
+    }
+
+    // este metodo decide o que fazer quando vc clica no Tabuleiro
     public void reagir(CasaGUI casaClicada) {
-        if (primeiroClique) {
-            if (casaClicada.possuiPeca()) {
-                casaClicadaOrigem = casaClicada;
-                casaClicadaOrigem.destacar();
-                primeiroClique = false;
-            }
-            else {
-              JOptionPane.showMessageDialog(this, "Clique em uma peça.");
-            }
-        }
-        else {
-            casaClicadaDestino = casaClicada;
-            jogo.moverPeca(casaClicadaOrigem.getPosicaoX(), casaClicadaOrigem.getPosicaoY(), casaClicadaDestino.getPosicaoX(), casaClicadaDestino.getPosicaoY());
-            casaClicadaOrigem.atenuar();
-            primeiroClique = true;
-            atualizar();
-        }
-        
-        if (jogo.getJogadasSemComerPecas() == 20) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + "20 Jogadas sem comer nenhuma peça!");
-            criarNovoJogo();
-        }
-
-        if (jogo.getGanhador()==1) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + jogo.getJogadorUm().getNome() + " VENCEU!");
-            criarNovoJogo();
-        }
-        else if (jogo.getGanhador()==2) {
-            JOptionPane.showMessageDialog(this, "FIM DE JOGO! \n" + jogo.getJogadorDois().getNome() + " VENCEU!");
-            criarNovoJogo();
-        }
+        controller.lidaComCliques(casaClicada.getPosicaoX(), casaClicada.getPosicaoY());
     }
 
-    /**
-     * Cria um novo jogo e atualiza o tabuleiro gráfico.
-     */
     private void criarNovoJogo() {
-        if(!primeiroClique) {
-            primeiroClique = true;
-            casaClicadaOrigem.atenuar();
-        }               
         jogo = new Jogo();
+
+        // instancia o controlador ligando o Jogo com a Janela
+        controller = new JogoController(jogo, this);
+
+        // AJUSTE: Vincula a janela atual (this) diretamente na variável simples do jogo criado
+        jogo.setJogoOuvinte(this);
+
         atualizar();
     }
 
     private void atualizar() {
         tabuleiroGUI.atualizar(jogo);
+    }
+
+    public TabuleiroGUI getTabuleiroGUI() {
+        return tabuleiroGUI;
     }
 
     private void initComponents() {
@@ -237,11 +214,6 @@ public class JanelaPrincipal extends JFrame {
         menuNovo.setText("Novo");
         menuArquivo.add(menuNovo);
         menuArquivo.add(jSeparator1);
-        
-        menuStatus.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        menuStatus.setText("Status");
-        menuArquivo.add(menuStatus);
-        menuArquivo.add(jSeparator2);
 
         menuStatus.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         menuStatus.setText("Status");
@@ -259,26 +231,26 @@ public class JanelaPrincipal extends JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlColunas, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
-                    .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(pnlColunas, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                                        .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(pnlLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(tabuleiroGUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pack();
@@ -309,5 +281,4 @@ public class JanelaPrincipal extends JFrame {
     private javax.swing.JMenuItem menuStatus;
     private javax.swing.JPanel pnlColunas;
     private javax.swing.JPanel pnlLinhas;
-    private TabuleiroGUI tabuleiroGUI;
 }
